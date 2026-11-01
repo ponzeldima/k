@@ -1,0 +1,12 @@
+# Джерела: «ключ: бібліографічний опис» (ДСТУ 8302:2015). Номери в записці призначаються
+# автоматично за порядком першого посилання [@ключ] у тексті.
+tom: Томашевський В. М. Моделювання систем. Київ : Видавнича група BHV, 2005. 352 с. URL: https://pdf.lib.vntu.edu.ua/books/2016/Tomashev_2005_352.pdf (дата звернення: 28.10.2026).
+tb: Стеценко І. В. Моделювання систем : навч. посіб. Черкаси : ЧДТУ, 2010. 399 с.
+mk: Стеценко І. В., Дифучина О. Ю., Дифучин А. Ю. Моделювання систем. Курсова робота : рекомендації до виконання курсової роботи : навч. посіб. Київ : КПІ ім. Ігоря Сікорського, 2024. 109 с.
+python: Python 3 Documentation. Python Software Foundation. URL: https://docs.python.org/3/ (дата звернення: 28.10.2026).
+bpmn: Business Process Model and Notation (BPMN). Version 2.0.2. Object Management Group, 2013. URL: https://www.omg.org/spec/BPMN/2.0.2/ (дата звернення: 28.10.2026).
+numpy: NumPy Documentation. URL: https://numpy.org/doc/stable/ (дата звернення: 28.10.2026).
+scipy: SciPy Documentation. URL: https://docs.scipy.org/doc/scipy/ (дата звернення: 28.10.2026).
+mpl: Matplotlib: Visualization with Python. URL: https://matplotlib.org/stable/ (дата звернення: 28.10.2026).
+uml: Unified Modeling Language (UML). Version 2.5.1. Object Management Group, 2017. URL: https://www.omg.org/spec/UML/2.5.1/ (дата звернення: 28.10.2026).
+repo: Tanya Ponzel. course_work_csdes. GitHub. URL: https://github.com/tannnnnny/course_work_csdes.git (дата звернення: 28.10.2026).

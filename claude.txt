@@ -1,0 +1,3106 @@
+привіт, мені треба зробити курсову
+завдання:
+Завдання B20. Експериментальна роботизована гнучка виробнича система 
+має два верстати із числовим пультом керування, три роботи, пункт прибуття і 
+склад оброблених деталей. Деталі прибувають на пункт прибуття кожні 40 
+секунд згідно з експоненціальним законом розподілу, захоплюються одним з 
+вільних роботів і переміщуються ним до першого верстата, після чого робот 
+звільняється. Після завершення обробки на першому верстаті деталь 
+захоплюється одним з роботів і переміщується на другий верстат, а після обробки 
+на другому верстаті – одним з роботів переміщується на склад оброблених 
+деталей. Кожний з верстатів може одночасно обробляти до трьох деталей. 
+Час переміщення робота між пунктом прибуття і першим верстатом, 
+першим і другим верстатом, другим верстатом і пунктом зберігання оброблених 
+деталей складає відповідно 6, 7, і 5 секунд незалежно від того, холостий це хід, 
+чи ні. Роботу потрібний час 8±1 секунд на захоплення або вивільнення деталей. 
+Час обробки на першому верстаті розподілений за нормальним законом із 
+середнім значення 60 секунд і має стандартне відхилення 10 секунд. Середній 
+час обробки на другому верстаті дорівнює 100 секунд і має експоненціальний 
+закон розподілу. 
+Визначить найкращий (з точки зору підвищення пропускної здатності 
+гнучкої виробничої системи) спосіб закріплення роботів до операцій. Можливі 
+варіанти закріплення: 
+1) по одному роботу на кожний з трьох шляхів переміщення деталей (пункт 
+прибуття – перший верстат, перший верстат – другий верстат, другий верстат, 
+склад); 
+24 
+2) кожний робот може використовуватися на кожному шляху переміщення 
+деталей(при цьому повинен займатися найближчий з роботів). 
+Знайдіть розподіл часу проходження деталей, коефіцієнти використання 
+роботів і верстатів, максимальну місткість місця зберігання деталей на ділянці 
+прибуття.
+також в корені репи є пдф - 1 методичка і 2 файли які описують, як саме робити курсач
+
+тож твоя задача написати кодову імплементацію, поки що робити діаграми чи писати записку не треба.
+
+для початку детально проаналізуй завдання, прочитай із методички те, що тобі треба знати, та підготуй план імплементації, я перечитаю і тоді імплементуєш, якщо все ок
+Show less
+Bash List repo files and check tools
+IN
+cd "c:/Users/DmytroPonzel/Desktop/k" && ls -la && which pdftotext python python3 2>/dev/null
+
+OUT
+total 34348
+drwxr-xr-x 1 AzureAD+DmytroPonzel 4096        0 Oct 21 18:56 .
+drwxr-xr-x 1 AzureAD+DmytroPonzel 4096        0 Oct 21 18:52 ..
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 16555108 Oct 21 18:56 Microsoft_Word_МоделСистемВиправлений2_docx.pdf
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096  3372906 Oct 21 18:56 k_1.pdf
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 15229237 Oct 21 18:56 k_2.pdf
+/ucrt64/bin/pdftotext
+/c/Users/DmytroPonzel/AppData/Local/Microsoft/WindowsApps/python
+/c/Users/DmytroPonzel/AppData/Local/Microsoft/WindowsApps/python3
+Bash Extract text from PDFs
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && S="C:/Users/DMYTRO~1/AppData/Local/Temp/claude/c--Users-DmytroPonzel-Desktop-k/15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557/scratchpad" && mkdir -p "$S" && pdftotext -layout Microsoft_Word_*.pdf "$S/metod.txt"; pdftotext -layout k_1.pdf "$S/k1.txt"; pdftotext -layout k_2.pdf "$S/k2.txt"; wc -l "$S"/*.txt; head -c 3000 "$S/k1.txt"
+
+OUT
+     0 C:/Users/DMYTRO~1/AppData/Local/Temp/claude/c--Users-DmytroPonzel-Desktop-k/15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557/scratchpad/k1.txt
+     0 C:/Users/DMYTRO~1/AppData/Local/Temp/claude/c--Users-DmytroPonzel-Desktop-k/15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557/scratchpad/k2.txt
+ 10696 C:/Users/DMYTRO~1/AppData/Local/Temp/claude/c--Users-DmytroPonzel-Desktop-k/15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557/scratchpad/metod.txt
+ 10696 total
+Bash Inspect PDF metadata
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && pdfinfo k_1.pdf | grep -E "Pages|Producer|Creator"; pdfinfo k_2.pdf | grep -E "Pages|Producer|Creator"; pdfinfo Microsoft*.pdf | grep Pages; which pdftoppm tesseract
+
+OUT
+Exit code 2
+/usr/bin/bash: line 1: pdfinfo: command not found
+/usr/bin/bash: line 1: pdfinfo: command not found
+/usr/bin/bash: line 1: pdfinfo: command not found
+which: no pdftoppm in (/c/Users/DmytroPonzel/bin:/ucrt64/bin:/usr/local/bin:/usr/bin:/bin:/ucrt64/bin:/usr/bin:/c/Users/DmytroPonzel/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/WindowsPowerShell/Scripts:/c/Program Files/dotnet:/c/Program Files/Microsoft SQL Server/150/Tools/Binn:/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn:/c/Program Files/Docker/Docker/resources/bin:/c/Program Files/RedHat/Podman:/c/Program Files/Amazon/AWSCLIV2:/c/Program Files/Microsoft SQL Server/170/Tools/Binn:/c/Program Files/GitHub CLI:/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit:/c/Program Files (x86)/Yarn/bin:/cmd:/c/Users/DmytroPonzel/AppData/Local/Author Software/nvm:/c/Users/DmytroPonzel/AppData/Local/Author Software/nvm/.nodejs:/c/Users/DmytroPonzel/.local/bin:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WindowsApps:/c/Users/DmytroPonzel/AppData/Local/Programs/Microsoft VS Code/bin:/c/Users/DmytroPonzel/.git-secrets:/c/Users/DmytroPonzel/.dotnet/tools:/c/Users/DmytroPonzel/AppData/Local/Programs/cursor/resources/app/bin:/c/Program Files/Amazon/AWSCLIV2:/c/Users/DmytroPonzel/AppData/Local/Programs/Kiro/bin:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WinGet/Packages/GitHub.Copilot_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/DmytroPonzel/bin:/c/Users/DmytroPonzel/AppData/Local/gh-cli/bin:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WinGet/Packages/ahmetb.kubectx_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WinGet/Packages/ahmetb.kubens_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/DmytroPonzel/AppData/Local/Yarn/bin:/usr/bin/vendor_perl:/usr/bin/core_perl)
+which: no tesseract in (/c/Users/DmytroPonzel/bin:/ucrt64/bin:/usr/local/bin:/usr/bin:/bin:/ucrt64/bin:/usr/bin:/c/Users/DmytroPonzel/bin:/c/Windows/system32:/c/Windows:/c/Windows/System32/Wbem:/c/Windows/System32/WindowsPowerShell/v1.0:/c/Windows/System32/OpenSSH:/c/Program Files/WindowsPowerShell/Scripts:/c/Program Files/dotnet:/c/Program Files/Microsoft SQL Server/150/Tools/Binn:/c/Program Files/Microsoft SQL Server/Client SDK/ODBC/170/Tools/Binn:/c/Program Files/Docker/Docker/resources/bin:/c/Program Files/RedHat/Podman:/c/Program Files/Amazon/AWSCLIV2:/c/Program Files/Microsoft SQL Server/170/Tools/Binn:/c/Program Files/GitHub CLI:/c/Program Files (x86)/Windows Kits/10/Windows Performance Toolkit:/c/Program Files (x86)/Yarn/bin:/cmd:/c/Users/DmytroPonzel/AppData/Local/Author Software/nvm:/c/Users/DmytroPonzel/AppData/Local/Author Software/nvm/.nodejs:/c/Users/DmytroPonzel/.local/bin:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WindowsApps:/c/Users/DmytroPonzel/AppData/Local/Programs/Microsoft VS Code/bin:/c/Users/DmytroPonzel/.git-secrets:/c/Users/DmytroPonzel/.dotnet/tools:/c/Users/DmytroPonzel/AppData/Local/Programs/cursor/resources/app/bin:/c/Program Files/Amazon/AWSCLIV2:/c/Users/DmytroPonzel/AppData/Local/Programs/Kiro/bin:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WinGet/Packages/GitHub.Copilot_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/DmytroPonzel/bin:/c/Users/DmytroPonzel/AppData/Local/gh-cli/bin:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WinGet/Packages/ahmetb.kubectx_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/DmytroPonzel/AppData/Local/Microsoft/WinGet/Packages/ahmetb.kubens_Microsoft.Winget.Source_8wekyb3d8bbwe:/c/Users/DmytroPonzel/AppData/Local/Yarn/bin:/usr/bin/vendor_perl:/usr/bin/core_perl)
+7:00 PM
+The k_1/k_2 files are scanned, so I'll read them as images through Read. Starting with k_1.
+
+
+
+Read C:\Users\DmytroPonzel\Desktop\k\k_1.pdf
+Bash Check Python PDF libraries
+IN
+python -c "import fitz; print(fitz.__doc__)" 2>&1; python -c "import pypdf; print(pypdf.__version__)" 2>&1; pip --version
+
+OUT
+Exit code 127
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+Python was not found; run without arguments to install from the Microsoft Store, or disable this shortcut from Settings > Apps > Advanced app settings > App execution aliases.
+/usr/bin/bash: line 1: pip: command not found
+Bash Look for available PDF/image tools and runtimes
+IN
+ls /ucrt64/bin | grep -i -E "pdf|magick|gs" ; which py node java dotnet 2>/dev/null; ls /c/Users/DmytroPonzel/AppData/Local/Programs/ 2>/dev/null
+
+OUT
+Avalonia.Dialogs.dll
+System.Text.Encodings.Web.dll
+pdftotext.exe
+/c/Users/DmytroPonzel/AppData/Local/Author Software/nvm/.nodejs/node
+/c/Program Files/dotnet/dotnet
+Common
+Kiro
+Microsoft VS Code
+Podman Desktop
+cursor
+7:00 PM
+No Python and no pdftoppm here. Scanned PDFs usually hold one JPEG per page, so I'll pull those out with a small Node script.
+
+
+
+Bash Extract embedded JPEG page images from scanned PDFs
+IN
+S="C:/Users/DMYTRO~1/AppData/Local/Temp/claude/c--Users-DmytroPonzel-Desktop-k/15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557/scratchpad"; cat > "$S/ext.js" <<'EOF'
+const fs=require('fs');const [,,inp,outdir]=process.argv;fs.mkdirSync(outdir,{recursive:true});
+const b=fs.readFileSync(inp);const s=b.toString('latin1');let re=/<<([\s\S]*?)>>\s*stream\r?\n/g,m,n=0;const filt={};
+while((m=re.exec(s))){const d=m[1];if(!/\/Subtype\s*\/Image/.test(d))continue;const f=(d.match(/\/Filter\s*\/?\[?\s*\/(\w+)/)||[])[1];filt[f]=(filt[f]||0)+1;
+const st=m.index+m[0].length;const e=s.indexOf('endstream',st);if(f==='DCTDecode'){n++;fs.writeFileSync(`${outdir}/p${String(n).padStart(3,'0')}.jpg`,b.subarray(st,e));}}
+console.log(n,filt);
+EOF
+cd "C:/Users/DmytroPonzel/Desktop/k"; node "$S/ext.js" k_1.pdf "$S/k1"; node "$S/ext.js" k_2.pdf "$S/k2"; ls "$S/k1" | head; ls -la "$S/k2" | head -5
+
+OUT
+0 {}
+153 { DCTDecode: 153 }
+total 668
+drwxr-xr-x 1 AzureAD+DmytroPonzel 4096    0 Oct 21 19:00 .
+drwxr-xr-x 1 AzureAD+DmytroPonzel 4096    0 Oct 21 19:00 ..
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 1972 Oct 21 19:00 p001.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 2256 Oct 21 19:00 p002.jpg
+Bash Inspect extracted images and PDF structure
+IN
+S="C:/Users/DMYTRO~1/AppData/Local/Temp/claude/c--Users-DmytroPonzel-Desktop-k/15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557/scratchpad"; ls -S -la "$S/k2" | head -8; cd "C:/Users/DmytroPonzel/Desktop/k"; head -c 1500 k_1.pdf | strings | head -30; grep -a -c "/Type /Page\b\|/Type/Page[^s]" k_1.pdf k_2.pdf; grep -a -o "/Producer[^>]*" k_1.pdf k_2.pdf | head
+
+OUT
+total 668
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 5636 Oct 21 19:00 p104.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 5081 Oct 21 19:00 p098.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 4944 Oct 21 19:00 p092.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 4907 Oct 21 19:00 p078.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 4494 Oct 21 19:00 p086.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 4032 Oct 21 19:00 p016.jpg
+-rw-r--r-- 1 AzureAD+DmytroPonzel 4096 3968 Oct 21 19:00 p017.jpg
+/usr/bin/bash: line 1: strings: command not found
+k_1.pdf:11
+k_2.pdf:42
+k_1.pdf:/Producer (Microsoft: Print To PDF)
+k_2.pdf:/Producer (Microsoft: Print To PDF)
+7:01 PM
+These PDFs came from "Microsoft Print To PDF", so the text is stored as glyph outlines and can't be extracted as text. I'll render the pages to PNG with Windows' built-in WinRT PDF API.
+
+
+
+PowerShell Render scanned PDF pages to PNG via WinRT
+IN
+$S = "$env:LOCALAPPDATA\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad"
+$script = @'
+param($pdfPath, $outDir)
+Add-Type -AssemblyName System.Runtime.WindowsRuntime
+$null = [Windows.Storage.StorageFile, Windows.Storage, ContentType=WindowsRuntime]
+$null = [Windows.Data.Pdf.PdfDocument, Windows.Data.Pdf, ContentType=WindowsRuntime]
+$null = [Windows.Storage.Streams.InMemoryRandomAccessStream, Windows.Storage.Streams, ContentType=WindowsRuntime]
+$asTask = ([System.WindowsRuntimeSystemExtensions].GetMethods() | ? { $_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1' })[0]
+$asTaskA = ([System.WindowsRuntimeSystemExtensions].GetMethods() | ? { $_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncAction' })[0]
+function Await($op, [Type]$t) { $task = $asTask.MakeGenericMethod($t).Invoke($null, @($op)); $task.Wait(); $task.Result }
+New-Item -ItemType Directory -Force $outDir | Out-Null
+$file = Await ([Windows.Storage.StorageFile]::GetFileFromPathAsync($pdfPath)) ([Windows.Storage.StorageFile])
+$doc = Await ([Windows.Data.Pdf.PdfDocument]::LoadFromFileAsync($file)) ([Windows.Data.Pdf.PdfDocument])
+"pages: $($doc.PageCount)"
+$folder = Await ([Windows.Storage.StorageFolder]::GetFolderFromPathAsync($outDir)) ([Windows.Storage.StorageFolder])
+for ($i=0; $i -lt $doc.PageCount; $i++) {
+  $page = $doc.GetPage($i)
+  $opts = New-Object Windows.Data.Pdf.PdfPageRenderOptions
+  $opts.DestinationWidth = 1200
+  $name = "p{0:D3}.png" -f ($i+1)
+  $f = Await ($folder.CreateFileAsync($name, [Windows.Storage.CreationCollisionOption]::ReplaceExisting)) ([Windows.Storage.StorageFile])
+  $stream = Await ($f.OpenAsync([Windows.Storage.FileAccessMode]::ReadWrite)) ([Windows.Storage.Streams.IRandomAccessStream])
+  $t = $asTaskA.Invoke($null, @($page.RenderToStreamAsync($stream, $opts))); $t.Wait()
+  $stream.Dispose(); $page.Dispose()
+}
+'@
+Set-Content -Path "$S\render.ps1" -Value $script -Encoding utf8
+& "$S\render.ps1" "C:\Users\DmytroPonzel\Desktop\k\k_1.pdf" "$S\r1"
+& "$S\render.ps1" "C:\Users\DmytroPonzel\Desktop\k\k_2.pdf" "$S\r2"
+
+OUT
+pages: 11
+pages: 42
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p001.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p002.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p003.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p004.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p005.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p006.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p007.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p008.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p009.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p010.png
+Read C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r1\p011.png
+k_1 covers the general requirements (pages 1–11), while k_2's 42 pages likely contain the formalisms and section 3 instructions. I'll have two agents read k_2 and the text-based methodical guide in parallel to avoid filling up context with page images.
+Agent:Read k_2 guide pages
+IN
+You are helping a student implement a coursework simulation (KPI "Моделювання систем. Курсова робота", Stetsenko et al. 2024). The guide's pages were rendered to PNG images at:
+C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\r2\p001.png ... p042.png
+(42 pages; use the Read tool on each PNG to view it. Read ALL 42 pages.)
+
+The student's variant is B20 (robotic flexible manufacturing system: 2 CNC machines each processing up to 3 parts at once, 3 robots, arrival point, warehouse; exp arrivals mean 40s; robot travel 6/7/5 s; grab/release 8±1 s; machine1 N(60,10); machine2 exp(100); compare robot assignment: dedicated robot per route vs. any robot (nearest one); find distribution of part sojourn time, utilization of robots and machines, max storage capacity at arrival area).
+
+Produce a DETAILED written report (in English or Ukrainian, plain text, can be long — 1500-3000 words) covering exactly what the guide requires for the CODE implementation and experiments. In particular extract, as faithfully as possible (quote key sentences and formulas):
+1. Which page range / sections of the guide these 42 pages are (page numbers printed at the bottom).
+2. Whether variant B20 or the B-level task list says which formalism to use (мережа масового обслуговування / стохастична мережа Петрі / Петрі-об'єктна модель), and section 2.4 list of formalisms and any rules about which formalism is required for level B.
+3. For each formalism: the formal definitions (e.g. Petri net with time delays, priorities, probabilities, multichannel transitions, conflict resolution; queueing network elements; Petri-object model), and the reference algorithm of imitation (step by step), including class structures/names given in the guide (e.g. PetriSim, PetriObjModel, Model/Element/Create/Process/Dispose classes, etc.), pseudo-code or Java code snippets — reproduce code snippets as fully as feasible.
+4. Requirements for verification of the model (what tables/experiments are expected, e.g. varying parameters and checking outputs).
+5. Requirements for the experimental study: transient period (перехідний період) determination, run length, number of runs/replications, confidence intervals, statistical tests (e.g. chi-square for distribution fitting), factor experiments, regression/ANOVA, anything with formulas.
+6. How statistics should be collected (mean queue length, utilization, time-in-system distribution/histogram, max queue).
+7. Section 3.1.5 interpretation and 3.3 contents of chapters — only parts relevant to what the code must produce (outputs, tables, graphs).
+8. Any example worked tasks similar to robots/machines/manufacturing and how they were modeled.
+9. Any language recommendations (Java, C++, C#, Python?) and any requirement to use the course's own library (e.g. PetriObjModelPaint).
+Be precise and factual; mark anything unreadable. Do not write code.
+ Finished · type /tasks to see its transcript
+Agent:Summarize методичка text
+IN
+A student is implementing a coursework simulation (discrete-event modeling course, KPI). There is a methodological guide extracted to text at:
+C:\Users\DMYTRO~1\AppData\Local\Temp\claude\c--Users-DmytroPonzel-Desktop-k\15c14a94-5f4c-48e5-b2d0-8e4ed6bdb557\scratchpad\metod.txt
+(~10700 lines, Ukrainian; extracted from C:\Users\DmytroPonzel\Desktop\k\Microsoft_Word_МоделСистемВиправлений2_docx.pdf). Read it fully (in chunks with the Read tool, offset/limit).
+
+The student's task (variant B20): robotic flexible manufacturing system: 2 CNC machines each can process up to 3 parts simultaneously, 3 robots, arrival point, warehouse. Arrivals exp with mean 40 s; part grabbed by a free robot, moved to machine1, robot freed; after machine1 a robot moves it to machine2; after machine2 a robot moves it to warehouse. Robot travel times arrival–M1 6 s, M1–M2 7 s, M2–warehouse 5 s (same for idle moves). Grab or release takes 8±1 s. M1 time N(60,10), M2 time exp(100). Compare assignment: (1) one robot dedicated to each of 3 routes; (2) any robot on any route, the nearest one is used. Find distribution of part sojourn time, utilization of robots and machines, max storage capacity at arrival area.
+
+Write a DETAILED report (1500-3000 words, plain text) with:
+1. What this document is (title, authors, structure/table of contents).
+2. Everything relevant to the CODE implementation: formalisms described (queueing networks, stochastic Petri nets, Petri-object models), their formal definitions, simulation algorithms step by step, class designs and code snippets (reproduce key Java/other code as fully as feasible, with line refs), random number generation for exp/normal/uniform/Erlang, how statistics are collected (mean queue, utilization, time in system, max queue), how multi-channel devices are handled, conflict resolution/priorities.
+3. Requirements for verification and experimental study: transient period, run length, number of replications, confidence intervals, distribution fitting tests (chi-square etc.), factor experiments, regression, comparing alternatives — include formulas.
+4. Any example closely resembling robots/machines/manufacturing/transport, and how it was modeled (Petri net structure etc.).
+5. Is this document a lecture textbook or the coursework guide? Note anything that tells which formalism a B-level task must use.
+Give line numbers for key passages. Be precise and factual. Do not write code yourself.
+ Finished · type /tasks to see its transcript
+7:03 PM
+Both agents are running: one is reading k_2, the other the методичка. I'll write the plan once their reports come back.
+
+
+
+7:06 PM
+The k_2 report is in: it covers guide pages 49–90, i.e. the formalisms, the simulation algorithm, verification and the experiments. It doesn't say which formalism variant B20 requires, so I'm waiting on the методичка report before writing the plan.
+
+
+
+7:11 PM
+Я дочитав усе, що є в репозиторії. Нижче розбір завдання і план реалізації. Наприкінці є кілька питань: від відповідей залежить, як я писатиму код.
+
+0. Що я прочитав і чого бракує
+k_1.pdf — це сторінки 1–11 методички до курсової (Стеценко, Дифучина, Дифучин, 2024). Там загальні вимоги: структура роботи, верифікація, експерименти, код на GitHub і в додатках.
+k_2.pdf — сторінки 49–90 тієї ж методички, розділ 3.1:
+формалізми: мережа масового обслуговування (МО), стохастична мережа Петрі, Петрі-об'єктна модель;
+алгоритми імітації 3.1–3.4;
+верифікація;
+експерименти: перехідний період, кількість прогонів, χ², ANOVA, регресія.
+Microsoft_Word_…pdf — це підручник Стеценко «Моделювання систем», а не методичка до курсової. До того ж PDF неповний: бракує розділів про алгоритми для мереж Петрі (5.3–5.7) і розділу 11 з курсовою. З нього беру генератори випадкових чисел, формули для статистики й методи порівняння альтернатив.
+Чого немає: сторінок 12–48 методички, тобто тексту варіантів і розділу 2.4 «Перелік пропонованих формалізмів». Тому з файлів я не можу визначити, який формалізм у тебе в B20 (див. питання 1).
+Вимоги методички, які прямо впливають на код:
+
+Алгоритм імітації має бути власний. SimPy, CPNTools та подібні бібліотеки не можна. Мову можна обрати будь-яку, але вибір треба обґрунтувати.
+Час просувається до найближчої події, а не з фіксованим кроком. Одночасні події виконуються у випадковому порядку, якщо логіка системи не задає пріоритет.
+Для кожної альтернативи потрібна своя модель. Обидва способи закріплення роботів мають мати свій концептуальний опис, формалізований опис і алгоритм.
+У додатках обов'язкові фрагмент протоколу подій і таблиця верифікації (запуски зі зміненими вхідними змінними).
+Експерименти:
+перехідний період визначити щонайменше за 4 прогонами (формули 3.1–3.3);
+кількість прогонів рахувати за формулою p = 20(σ/ε)²;
+результат експерименту — середнє за серією повторних прогонів;
+розподіл часу перебування: гістограма → гіпотеза про закон → оцінка параметрів → перевірка χ²;
+дві альтернативи порівнювати дисперсійним аналізом (ANOVA). Для такого порівняння підручник радить спільні випадкові числа.
+1. Аналіз системи B20
+Обладнання:
+
+Пункт прибуття (A), верстат 1 (M1), верстат 2 (M2), склад (W).
+3 роботи.
+Кожен верстат має 3 місця, тобто обробляє до трьох деталей одночасно.
+Вхідні величини (позначення методички):
+
+Величина	Закон
+Інтервал надходження	exp(40)
+Захоплення / вивільнення	unif(8,1), тобто 7…9 с, окремо на кожну дію
+Обробка на M1	norm(60,10), значення ≤ 0 відкидаю
+Обробка на M2	exp(100)
+Переїзди	A–M1 = 6, M1–M2 = 7, M2–W = 5 с, порожнім і з деталлю однаково
+Транспортна операція на маршруті i:
+
+Порожній переїзд робота з місця, де він стоїть, до точки завантаження (0 с, якщо він уже там).
+Захоплення, 8±1 с. Після цього місце на верстаті-джерелі звільняється.
+Переїзд із деталлю.
+Вивільнення, 8±1 с. На верстаті-приймачі після цього починається обробка.
+Робот вільний і стоїть у точці призначення.
+Мої припущення (їх треба зафіксувати в записці):
+
+Розташування лінійне: A–M1–M2–W. Відстані, яких немає в умові, рахую як суми: A–M2 = 13, M1–W = 12, A–W = 18 с. Для другого варіанта це потрібно, бо робот може опинитися будь-де.
+Деталь займає місце на верстаті від початку вивільнення на нього до кінця захоплення з нього. Оброблена деталь, яка чекає на робота, теж займає місце, тобто верстат частково блокується.
+Робот не бере деталь, якщо на наступному верстаті немає місця. Місце резервується в момент призначення робота. Без цього правила у варіанті 2 можливе взаємне блокування: три роботи тримають деталі біля повного M2, а M2 чекає на робота. Варіант правила обговорюємо в питанні 3.
+Площадка прибуття необмежена. Її максимальне заповнення якраз і є шуканою «максимальною місткістю».
+Що робить вільний робот у варіанті 2. Якщо задач кілька, він бере найближчу до себе. При рівних відстанях бере ту, що ближче до кінця маршруту (W > M2 > M1), бо це розвантажує вузьке місце. Пріоритет зроблю параметром.
+Варіант 1: робот закріплений за маршрутом, після доставки стоїть у точці призначення і повертається порожнім, коли отримує наступну задачу.
+Попередня оцінка завантаження (важливо):
+
+M2 — вузьке місце. Одна деталь займає на ньому місце мінімум 8 + 100 + 8 = 116 с плюс час очікування на робота.
+Завантаження M2: ρ₂ ≈ (1/40 · 116) / 3 ≈ 0,97. Це ще без резервування місця на час переїзду робота. Якщо резервувати місце з моменту призначення, виходить ρ₂ ≈ 1,05–1,1, тобто система нестійка.
+Отже, система працює на межі пропускної здатності. Найімовірніше, саме тому від способу закріплення роботів так сильно залежить результат: швидший забір деталі з M2 зменшує ефективний час, який вона займає місце.
+Можливий наслідок: черга на площадці прибуття росте без обмеження, і перехідний період не закінчується. Методичка для такого випадку прямо каже змінити відгук або параметри.
+Тому окремо пропоную експеримент «пропускна здатність»: змінювати середній інтервал надходження (наприклад, 36…60 с) і для кожного варіанта знайти межу стійкості.
+Робочий цикл робота на маршрутах: приблизно 28, 30 і 26 с. Тому у варіанті 1 завантаження роботів буде 0,65–0,75.
+2. Формалізм (рекомендація)
+Рекомендую стохастичну мережу Петрі з багатоканальними переходами, пріоритетами й випадковим вирішенням конфліктів. Двигун пишу сам за алгоритмами 3.1 і 3.3 методички, а мережу генерує код для кожного з двох варіантів.
+
+Чому не мережа МО: деталі одночасно потрібні два ресурси (робот і місце на наступному верстаті), а в робота є місце розташування. Це погано вкладається в мережу МО. Мережа Петрі дає це природно, а «найближчий робот» реалізується пріоритетами переходів.
+
+Ескіз мережі:
+
+Позиції:
+Queue_A, M1_free(3), M1_loaded, M1_done, M2_free(3), M2_loaded, M2_done, Warehouse;
+для кожного робота: R_k@A, R_k@M1, R_k@M2, R_k@W, а також проміжні стани R_k_toPick_i, R_k_grab_i, R_k_carry_i, R_k_release_i.
+Призначення Go(k, l, i):
+входи: робот k у місці l, деталь у джерелі маршруту i, вільне місце на верстаті-приймачі (для маршруту на склад не потрібне);
+затримка: відстань від l до точки завантаження;
+пріоритет = −відстань, тому в конфлікті виграє найближчий робот.
+У варіанті 1 переходи Go створюються лише для «свого» маршруту робота, у варіанті 2 — для всіх.
+Далі ланцюжок переходів:
+Grab(k,i), unif(8,1): повертає маркер у M*_free джерела;
+Carry(k,i), фіксована затримка;
+Release(k,i), unif(8,1): ставить деталь на верстат, робот опиняється в точці призначення.
+Обробка: Proc1 norm(60,10) і Proc2 exp(100). Це багатоканальні переходи, кількість каналів обмежує M*_free.
+Arrival: exp(40).
+Розширення, без якого не вийде розподіл часу перебування. Маркери-деталі будуть об'єктами з id і часом надходження: позиції з деталями працюють як FIFO-списки, а канал переходу зберігає свою деталь. Маркери-ресурси (роботи, місця) лишаються анонімними. Це дає час перебування кожної деталі без порушення семантики мережі.
+
+3. Структура коду (за Python, див. питання 2)
+
+fms-sim/
+  sim/
+    rng.py          # власні генератори: exp = −m·ln(ζ), norm (полярний метод Марсальї), unif;
+                    # окремі потоки для кожного джерела випадковості (для спільних випадкових чисел)
+    petri/
+      net.py        # Place, Transition (затримка, пріоритет, ймовірність, багатоканальність), Arc
+      simulator.py  # алгоритм 3.1 + 3.3: календар подій, вихід/вхід маркерів,
+                    # випадковий порядок при однаковому пріоритеті, протокол подій
+    model/
+      params.py     # усі вхідні змінні та параметри (dataclass)
+      fms_net.py    # build_net(params, strategy="dedicated" | "nearest")
+    stats.py        # зважені за часом середні, максимуми, лічильники, записи по деталях
+  experiments/
+    verification.py # таблиця верифікації: зміна вхідних змінних → перевірка логіки виходів
+    trace.py        # фрагмент протоколу подій для додатку
+    warmup.py       # ≥4 прогони, ковзні середні за (3.2), визначення T перехідного періоду
+    replications.py # σ за пілотними прогонами → p = 20(σ/ε)², довірчі інтервали
+    compare.py      # варіант 1 проти 2 зі спільними випадковими числами, ANOVA (F-критерій)
+    capacity.py     # пропускна здатність залежно від інтервалу надходження, межа стійкості
+    distribution.py # гістограма часу перебування, підбір закону, перевірка χ²
+  tests/            # детерміновані сценарії з відомою відповіддю
+  main.py           # CLI: run / trace / verify / warmup / compare / capacity / dist
+Результати експериментів зберігатимуться в CSV/JSON. Графіки й записку зробимо пізніше.
+
+Вихідні характеристики (на кожен прогін, після відкидання перехідного періоду):
+
+Пропускна здатність: кількість деталей на складі за годину. Головний критерій порівняння варіантів.
+Час перебування деталі: масив значень для гістограми, середнє, σ, квантилі. Додатково: очікування на площадці прибуття та очікування робота біля M1 і M2.
+Завантаження кожного робота: частка часу зайнятості, розбита на порожні переїзди, переїзди з деталлю, захоплення і вивільнення.
+Завантаження верстатів:
+середня кількість зайнятих місць / 3;
+окремо частка часу власне обробки;
+окремо частка блокування, коли оброблена деталь чекає на робота.
+Площадка прибуття: максимум, зважене за часом середнє, розподіл довжини черги.
+Службові лічильники: скільки деталей надійшло, скільки обробила кожна ланка, скільки деталей у системі в кінці прогону.
+Верифікація:
+
+Тести з детермінованими часами. Наприклад, одна деталь: 8+6+8+60+8+7+8+100+8+5+8 з точним порожнім переїздом. Результат має збігатися до секунди.
+Таблиця верифікації. Змінюю по одному параметру: інтервал надходження, часи обробки, кількість місць, часи переїздів, кількість роботів. Перевіряю, що виходи змінюються логічно.
+Порівняння з аналітикою. Завантаження ланок у стійкому режимі має збігатися з оцінкою на кшталт ρ = λ·E[час зайнятості]/c.
+4. Порядок реалізації
+Генератори випадкових чисел і двигун мережі Петрі, з тестами на маленьких мережах.
+Мережа для обох варіантів, протокол подій, детерміновані тести.
+Збір статистики, CLI, одиночний прогін.
+Скрипти експериментів: верифікація, перехідний період, кількість прогонів, порівняння варіантів, пропускна здатність, розподіл часу перебування.
+Короткий README про запуск.
+Питання до тебе
+Формалізм. Який формалізм вказаний у твоєму завданні чи затверджений викладачем: мережа МО, мережа Петрі чи Петрі-об'єктна модель? Сторінок 12–48 методички, де він може бути, у файлах немає. Я рекомендую стохастичну мережу Петрі.
+Мова. Python на машині не встановлений; є Node і .NET, Java я не знайшов. Рекомендую Python: для χ², ANOVA і майбутніх графіків є готові бібліотеки, а методичка сама наводить це як перевагу Python. Тоді треба встановити Python 3.12+ з numpy, scipy і matplotlib. Чи краще Java або C#?
+Резервування місця на верстаті. Резервувати місце в момент призначення робота (гарантовано без взаємного блокування, моя пропозиція)? Чи щоб деталь займала місце лише фізично, а робот з деталлю чекав біля повного верстата? Тоді для варіанта 2 потрібне окреме правило проти блокування. Від цього вибору залежить, чи стійка система при інтервалі 40 с. Можу зробити обидва режими параметром.
+Інші припущення. Чи влаштовують лінійне розташування A–M1–M2–W і правило «вільний робот бере найближчу задачу, при рівності — ближчу до складу»?
+
+
+формалізм - Мережа масового обслуговування
+
+2. давай пайтон, в мене є uv ніби як
+
+3. давай оба режими параметром
+
+4. так
+Show more
+Bash Check uv and available Pythons
+IN
+uv --version; uv python list 2>&1 | head
+
+OUT
+uv 0.9.28 (0e1351e40 2026-01-29)
+cpython-3.15.0a5-windows-x86_64-none                 <download available>
+cpython-3.15.0a5+freethreaded-windows-x86_64-none    <download available>
+cpython-3.14.2-windows-x86_64-none                   C:\Users\DmytroPonzel\AppData\Roaming\uv\python\cpython-3.14.2-windows-x86_64-none\python.exe
+cpython-3.14.2+freethreaded-windows-x86_64-none      <download available>
+cpython-3.13.11-windows-x86_64-none                  <download available>
+cpython-3.13.11+freethreaded-windows-x86_64-none     <download available>
+cpython-3.12.12-windows-x86_64-none                  <download available>
+cpython-3.11.14-windows-x86_64-none                  <download available>
+cpython-3.10.19-windows-x86_64-none                  <download available>
+cpython-3.9.25-windows-x86_64-none                   <download available>
+Python 3.14 через uv доступний, тож переходжу до реалізації моделі СМО: верстати стануть 3-канальними вузлами з блокуванням (K=2), роботи — транспортною підсистемою (3 окремі одноканальні СМО або одна 3-канальна з вибором найближчого каналу), а надходження, черга та склад відповідатимуть Create/Queue/Dispose.
+Bash Create project skeleton and pyproject
+IN
+mkdir -p "C:/Users/DmytroPonzel/Desktop/k/src/fms/experiments" "C:/Users/DmytroPonzel/Desktop/k/tests" && cd "C:/Users/DmytroPonzel/Desktop/k" && cat > pyproject.toml <<'EOF'
+[project]
+name = "fms-sim"
+version = "0.1.0"
+description = "Імітаційна модель роботизованої ГВС (варіант B20) на основі мережі масового обслуговування"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.0",
+    "scipy>=1.13",
+]
+
+[project.scripts]
+fms = "fms.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/fms"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+EOF
+cat > .gitignore <<'EOF'
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+results/
+EOF
+echo ok
+
+OUT
+ok
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\rng.py
+131 lines
+"""Генератори випадкових чисел.
+
+Базова рівномірно розподілена величина ζ ∈ (0, 1] береться з генератора
+Mersenne Twister (random.Random), а всі інші закони отримуються власними
+формулами:
+  exp(m)      : r = -m · ln(ζ)                       (метод оберненої функції)
+  unif(d, s)  : r = d - s + 2s · ζ                   (рівномірний на (d-s, d+s))
+  norm(d, s)  : полярний метод Марсальї–Брея
+  const(d)    : r = d
+
+Кожне джерело випадковості моделі має власний потік (Stream), що дає змогу
+використовувати спільні випадкові числа при порівнянні альтернатив.
+"""
+
+from __future__ import annotations
+
+import math
+import random
+from dataclasses import dataclass
+
+
+class Stream:
+    """Окремий потік випадкових чисел із власним зерном."""
+
+    def __init__(self, seed: int | str):
+        self._rnd = random.Random(seed)
+        self._spare_normal: float | None = None
+
+    def zeta(self) -> float:
+        """Рівномірна величина на (0, 1]."""
+        return 1.0 - self._rnd.random()
+
+    def exponential(self, mean: float) -> float:
+        return -mean * math.log(self.zeta())
+
+    def uniform(self, center: float, half_width: float) -> float:
+        return center - half_width + 2.0 * half_width * self._rnd.random()
+
+    def standard_normal(self) -> float:
+        """Полярний метод Марсальї–Брея: генерує пару, другу зберігає."""
+        if self._spare_normal is not None:
+            value, self._spare_normal = self._spare_normal, None
+            return value
+        while True:
+            a1 = 2.0 * self._rnd.random() - 1.0
+            a2 = 2.0 * self._rnd.random() - 1.0
+            s = a1 * a1 + a2 * a2
+            if 0.0 < s <= 1.0:
+                break
+        beta = math.sqrt(-2.0 * math.log(s) / s)
+        self._spare_normal = a2 * beta
+        return a1 * beta
+
+    def normal(self, mean: float, std: float) -> float:
+        return mean + std * self.standard_normal()
+
+    def shuffle(self, items: list) -> None:
+        self._rnd.shuffle(items)
+
+    def random(self) -> float:
+        return self._rnd.random()
+
+
+@dataclass(frozen=True)
+class Dist:
+    """Опис закону розподілу у позначеннях методички: exp(d), norm(d,s), unif(d,s), d."""
+
+    kind: str
+    a: float
+    b: float = 0.0
+
+    def sample(self, stream: Stream) -> float:
+        if self.kind == "const":
+            return self.a
+        if self.kind == "exp":
+            return stream.exponential(self.a)
+        if self.kind == "unif":
+            return stream.uniform(self.a, self.b)
+        if self.kind == "norm":
+            # усічений нормальний закон: час обробки не може бути від'ємним
+            while True:
+                value = stream.normal(self.a, self.b)
+                if value > 0.0:
+                    return value
+        raise ValueError(f"Невідомий закон розподілу: {self.kind}")
+
+    @property
+    def mean(self) -> float:
+        return self.a
+
+    def __str__(self) -> str:
+        if self.kind == "const":
+            return f"{self.a:g}"
+        if self.kind == "exp":
+            return f"exp({self.a:g})"
+        return f"{self.kind}({self.a:g},{self.b:g})"
+
+
+def const(d: float) -> Dist:
+    return Dist("const", d)
+
+
+def exp(mean: float) -> Dist:
+    return Dist("exp", mean)
+
+
+def unif(center: float, half_width: float) -> Dist:
+    return Dist("unif", center, half_width)
+
+
+def norm(mean: float, std: float) -> Dist:
+    return Dist("norm", mean, std)
+
+
+STREAM_NAMES = ("arrivals", "m1", "m2", "handling", "ties")
+
+
+class RandomStreams:
+    """Набір незалежних потоків для кожного джерела випадковості моделі."""
+
+    def __init__(self, seed: int):
+        self.seed = seed
+        for name in STREAM_NAMES:
+            setattr(self, name, Stream(f"{seed}:{name}"))
+
+    arrivals: Stream
+    m1: Stream
+    m2: Stream
+    handling: Stream
+    ties: Stream
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\params.py
+61 lines
+"""Вхідні змінні та параметри моделі (усі часи — у секундах)."""
+
+from __future__ import annotations
+
+from dataclasses import dataclass, field, replace
+
+from .rng import Dist, exp, norm, unif
+
+# Стратегії закріплення роботів
+DEDICATED = "dedicated"  # 1) по одному роботу на кожний шлях переміщення
+NEAREST = "nearest"      # 2) будь-який робот на будь-якому шляху, займається найближчий
+
+# Політики зайняття місця на верстаті
+RESERVE = "reserve"    # місце резервується в момент призначення робота на перевезення
+PHYSICAL = "physical"  # місце займається лише при вивільненні деталі; робот з деталлю чекає
+
+# Розташування пунктів на лінії A – M1 – M2 – W (сек ходу робота від пункту прибуття).
+# Відстань між пунктами = різниця координат: A–M1 = 6, M1–M2 = 7, M2–W = 5,
+# A–M2 = 13, M1–W = 12, A–W = 18.
+DEFAULT_POSITIONS = {"A": 0.0, "M1": 6.0, "M2": 13.0, "W": 18.0}
+
+
+@dataclass(frozen=True)
+class Params:
+    # вхідні змінні
+    arrival: Dist = exp(40.0)        # інтервал надходження деталей
+    m1_time: Dist = norm(60.0, 10.0)  # час обробки на першому верстаті
+    m2_time: Dist = exp(100.0)        # час обробки на другому верстаті
+    handling: Dist = unif(8.0, 1.0)   # час захоплення або вивільнення деталі роботом
+
+    # параметри
+    m1_capacity: int = 3
+    m2_capacity: int = 3
+    n_robots: int = 3
+    positions: dict[str, float] = field(default_factory=lambda: dict(DEFAULT_POSITIONS))
+
+    # варіант організації системи
+    strategy: str = DEDICATED
+    slot_policy: str = RESERVE
+    # пріоритет маршрутів при однаковій відстані до робота (менше — важливіше):
+    # спочатку вивозити деталі ближче до складу, щоб розвантажувати верстати
+    route_rank: tuple[int, int, int] = (3, 2, 1)
+
+    def distance(self, a: str, b: str) -> float:
+        return abs(self.positions[a] - self.positions[b])
+
+    def with_(self, **changes) -> "Params":
+        return replace(self, **changes)
+
+    def scaled_travel(self, factor: float) -> "Params":
+        return replace(self, positions={k: v * factor for k, v in self.positions.items()})
+
+    def describe(self) -> str:
+        pos = ", ".join(f"{k}={v:g}" for k, v in self.positions.items())
+        return (
+            f"strategy={self.strategy}, slot_policy={self.slot_policy}, "
+            f"arrival={self.arrival}, M1={self.m1_time}, M2={self.m2_time}, "
+            f"handling={self.handling}, cap=({self.m1_capacity},{self.m2_capacity}), "
+            f"robots={self.n_robots}, positions[{pos}]"
+        )
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\elements.py
+426 lines
+"""Елементи мережі масового обслуговування роботизованої ГВС.
+
+Відповідність елементам формалізму (табл. 3.1 методички):
+  Create     – зовнішнє надходження вимог (деталей), інтервал exp(40);
+  Queue      – черга на площадці прибуття (необмежена, фіксується максимум);
+  Machine    – багатоканальна СМО без черги (верстат, 3 канали = 3 місця).
+               Канал після обробки переходить у стан «блокований» (K = 2):
+               маршрут виходу блокований, доки деталь не захопить робот;
+  Transport  – СМО транспортування, канали якої – роботи. Обслуговування
+               складається з фаз: холостий хід → захоплення → хід з деталлю →
+               (очікування місця) → вивільнення. Канал обирається правилом
+               «найближчий робот»;
+  Warehouse  – вихід з мережі (склад оброблених деталей).
+"""
+
+from __future__ import annotations
+
+import math
+from collections import deque
+from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from .model import Model, Route
+
+INF = math.inf
+
+
+@dataclass
+class Part:
+    """Вимога мережі – деталь. Зберігає моменти подій для статистики часу проходження."""
+
+    id: int
+    t_arrival: float
+    t_grab: dict[int, float] = field(default_factory=dict)   # маршрут -> початок захоплення
+    t_ready: dict[int, float] = field(default_factory=dict)  # маршрут -> момент готовності до перевезення
+    t_done: float = INF
+
+
+@dataclass
+class Task:
+    """Заявка на перевезення: деталь чекає робота на початку маршруту."""
+
+    route: int
+    part: Part
+    t_ready: float
+    channel: "MachineChannel | None" = None  # канал верстата-джерела (для маршрутів 2 і 3)
+
+
+class Element:
+    def __init__(self, name: str, model: "Model"):
+        self.name = name
+        self.model = model
+
+    def next_time(self) -> float:
+        return INF
+
+    def out_act(self, t: float) -> None:
+        pass
+
+    def update_stats(self, dt: float) -> None:
+        pass
+
+    def reset_stats(self) -> None:
+        pass
+
+    def state_str(self) -> str:
+        return ""
+
+
+# --------------------------------------------------------------------------- Create
+class Create(Element):
+    """Зовнішнє надходження деталей на пункт прибуття."""
+
+    def __init__(self, name: str, model: "Model", target: "Queue"):
+        super().__init__(name, model)
+        self.target = target
+        self.tnext = model.params.arrival.sample(model.streams.arrivals)
+        self.created = 0
+
+    def next_time(self) -> float:
+        return self.tnext
+
+    def out_act(self, t: float) -> None:
+        self.created += 1
+        part = Part(id=self.created, t_arrival=t)
+        self.model.log(t, self.name, f"надходження деталі #{part.id}")
+        self.target.put(part, t)
+        self.tnext = t + self.model.params.arrival.sample(self.model.streams.arrivals)
+
+
+# --------------------------------------------------------------------------- Queue
+class Queue(Element):
+    """Місце зберігання деталей на ділянці прибуття.
+
+    Деталь перебуває тут від надходження до завершення її захоплення роботом.
+    """
+
+    def __init__(self, name: str, model: "Model", route_out: int):
+        super().__init__(name, model)
+        self.route_out = route_out
+        self.length = 0
+        self.max_length = 0
+        self._sum_length = 0.0
+        self._hist: dict[int, float] = {}  # довжина -> сумарний час перебування в цьому стані
+
+    def put(self, part: Part, t: float) -> None:
+        self.length += 1
+        self.max_length = max(self.max_length, self.length)
+        part.t_ready[self.route_out] = t
+        self.model.add_task(Task(route=self.route_out, part=part, t_ready=t))
+
+    def grab_done(self, t: float) -> None:
+        self.length -= 1
+
+    def update_stats(self, dt: float) -> None:
+        self._sum_length += self.length * dt
+        self._hist[self.length] = self._hist.get(self.length, 0.0) + dt
+
+    def reset_stats(self) -> None:
+        self._sum_length = 0.0
+        self._hist = {}
+        self.max_length = self.length
+
+    def mean_length(self, period: float) -> float:
+        return self._sum_length / period if period > 0 else 0.0
+
+    def length_distribution(self, period: float) -> dict[int, float]:
+        return {k: v / period for k, v in sorted(self._hist.items())} if period > 0 else {}
+
+    def state_str(self) -> str:
+        return f"A={self.length}"
+
+
+# --------------------------------------------------------------------------- Machine
+FREE, RESERVED, LOADING, BUSY, BLOCKED, UNLOADING = (
+    "free", "reserved", "loading", "busy", "blocked", "unloading",
+)
+MACHINE_STATES = (FREE, RESERVED, LOADING, BUSY, BLOCKED, UNLOADING)
+_STATE_CHAR = {FREE: ".", RESERVED: "r", LOADING: "l", BUSY: "B", BLOCKED: "x", UNLOADING: "u"}
+
+
+@dataclass
+class MachineChannel:
+    index: int
+    state: str = FREE
+    part: Part | None = None
+    tnext: float = INF
+
+
+class Machine(Element):
+    """Верстат з ЧПК – багатоканальна СМО без черги.
+
+    Стани каналу (місця):
+      free      – вільне;
+      reserved  – зарезервоване під деталь, яку везе робот (політика reserve);
+      loading   – робот вивільняє на нього деталь;
+      busy      – обробка;
+      blocked   – обробку завершено, маршрут виходу блокований до приходу робота;
+      unloading – робот захоплює деталь.
+    """
+
+    def __init__(self, name: str, model: "Model", capacity: int, dist, stream, route_out: int):
+        super().__init__(name, model)
+        self.channels = [MachineChannel(i) for i in range(capacity)]
+        self.dist = dist
+        self.stream = stream
+        self.route_out = route_out
+        self.incoming = 0  # роботи, призначені на доставку сюди, але ще без місця (physical)
+        self.waiting_robots: deque = deque()  # роботи з деталлю, що чекають вільного місця
+        self.processed = 0
+        self._state_time = {s: 0.0 for s in MACHINE_STATES}
+
+    @property
+    def capacity(self) -> int:
+        return len(self.channels)
+
+    def count(self, state: str) -> int:
+        return sum(1 for ch in self.channels if ch.state == state)
+
+    def _first(self, state: str) -> MachineChannel | None:
+        return next((ch for ch in self.channels if ch.state == state), None)
+
+    def next_time(self) -> float:
+        return min(ch.tnext for ch in self.channels)
+
+    # --- події обробки
+    def out_act(self, t: float) -> None:
+        due = [ch for ch in self.channels if ch.tnext == t]
+        self.model.streams.ties.shuffle(due)
+        for ch in due:
+            ch.state = BLOCKED
+            ch.tnext = INF
+            self.processed += 1
+            ch.part.t_ready[self.route_out] = t
+            self.model.log(t, self.name, f"кінець обробки деталі #{ch.part.id} (місце {ch.index}) -> блокування")
+            self.model.add_task(Task(route=self.route_out, part=ch.part, t_ready=t, channel=ch))
+
+    # --- умова блокування маршруту входу B(S,t)
+    def can_dispatch_to(self) -> bool:
+        free = self.count(FREE)
+        if self.model.params.slot_policy == "reserve":
+            return free > 0
+        # physical: дозволяємо не більше одного «зайвого» робота на верстат,
+        # що виключає взаємне блокування роботів
+        return self.incoming <= free
+
+    def on_dispatch(self) -> MachineChannel | None:
+        if self.model.params.slot_policy == "reserve":
+            ch = self._first(FREE)
+            ch.state = RESERVED
+            return ch
+        self.incoming += 1
+        return None
+
+    def take_for_release(self, reserved: MachineChannel | None) -> MachineChannel | None:
+        """Робот підвіз деталь: повертає місце для вивільнення або None, якщо треба чекати."""
+        if reserved is not None:
+            reserved.state = LOADING
+            return reserved
+        ch = self._first(FREE)
+        if ch is None:
+            return None
+        self.incoming -= 1
+        ch.state = LOADING
+        return ch
+
+    def release_done(self, ch: MachineChannel, part: Part, t: float) -> None:
+        ch.state = BUSY
+        ch.part = part
+        ch.tnext = t + self.dist.sample(self.stream)
+        self.model.log(t, self.name, f"початок обробки деталі #{part.id} (місце {ch.index}), кінець о {ch.tnext:.3f}")
+
+    def start_grab(self, ch: MachineChannel) -> None:
+        ch.state = UNLOADING
+
+    def grab_done(self, ch: MachineChannel, t: float) -> None:
+        ch.state = FREE
+        ch.part = None
+        # розблокування робота, який чекав місця з деталлю (план події в момент t)
+        if self.waiting_robots:
+            robot = self.waiting_robots.popleft()
+            slot = self.take_for_release(None)
+            robot.transport.start_release(robot, slot, t)
+
+    # --- статистика
+    def update_stats(self, dt: float) -> None:
+        for ch in self.channels:
+            self._state_time[ch.state] += dt
+
+    def reset_stats(self) -> None:
+        self._state_time = {s: 0.0 for s in MACHINE_STATES}
+        self.processed = 0
+
+    def utilization(self, period: float) -> dict[str, float]:
+        """Частки часу (на одне місце), усереднені за трьома місцями."""
+        denom = period * self.capacity
+        share = {s: v / denom for s, v in self._state_time.items()} if denom > 0 else {}
+        occupied = 1.0 - share.get(FREE, 1.0)
+        return {
+            "occupied": occupied,
+            "processing": share.get(BUSY, 0.0),
+            "blocked": share.get(BLOCKED, 0.0),
+            "handling": share.get(LOADING, 0.0) + share.get(UNLOADING, 0.0),
+            "reserved": share.get(RESERVED, 0.0),
+        }
+
+    def state_str(self) -> str:
+        return f"{self.name}[{''.join(_STATE_CHAR[ch.state] for ch in self.channels)}]"
+
+
+# --------------------------------------------------------------------------- Warehouse
+class Warehouse(Element):
+    """Склад оброблених деталей – вихід з мережі."""
+
+    def accept(self, part: Part, t: float) -> None:
+        part.t_done = t
+        self.model.log(t, self.name, f"деталь #{part.id} на складі, час проходження {t - part.t_arrival:.3f}")
+        self.model.record_completion(part)
+
+
+# --------------------------------------------------------------------------- Transport
+R_FREE, R_TO_PICKUP, R_GRAB, R_CARRY, R_WAIT, R_RELEASE = (
+    "free", "empty_move", "grab", "loaded_move", "wait_slot", "release",
+)
+ROBOT_STATES = (R_FREE, R_TO_PICKUP, R_GRAB, R_CARRY, R_WAIT, R_RELEASE)
+
+
+@dataclass(eq=False)
+class Robot:
+    """Канал транспортної СМО."""
+
+    id: int
+    location: str
+    allowed_routes: tuple[int, ...]
+    transport: "Transport" = None
+    state: str = R_FREE
+    tnext: float = INF
+    task: Task | None = None
+    route: "Route | None" = None
+    dest_slot: MachineChannel | None = None
+    jobs: dict[int, int] = field(default_factory=dict)
+    state_time: dict[str, float] = field(default_factory=lambda: {s: 0.0 for s in ROBOT_STATES})
+
+
+class Transport(Element):
+    """СМО транспортування деталей роботами.
+
+    Стратегія 1: три одноканальні СМО, кожна обслуговує лише свій маршрут.
+    Стратегія 2: одна триканальна СМО, що обслуговує всі маршрути.
+    """
+
+    def __init__(self, name: str, model: "Model", robots: list[Robot]):
+        super().__init__(name, model)
+        self.robots = robots
+        for r in robots:
+            r.transport = self
+
+    def next_time(self) -> float:
+        return min(r.tnext for r in self.robots)
+
+    def _handling(self) -> float:
+        return self.model.params.handling.sample(self.model.streams.handling)
+
+    # --- початок обслуговування (призначення робота на заявку)
+    def assign(self, robot: Robot, task: Task, t: float) -> None:
+        route = self.model.routes[task.route]
+        robot.task = task
+        robot.route = route
+        robot.jobs[route.index] = robot.jobs.get(route.index, 0) + 1
+        robot.dest_slot = route.dest.on_dispatch() if isinstance(route.dest, Machine) else None
+        travel = self.model.params.distance(robot.location, route.pickup)
+        self.model.log(
+            t, f"Robot{robot.id}",
+            f"призначено на маршрут {route.index} ({route.pickup}->{route.drop}) для деталі #{task.part.id}, "
+            f"холостий хід {robot.location}->{route.pickup} {travel:g}",
+        )
+        if travel > 0:
+            robot.state = R_TO_PICKUP
+            robot.tnext = t + travel
+        else:
+            self._start_grab(robot, t)
+
+    def _start_grab(self, robot: Robot, t: float) -> None:
+        robot.location = robot.route.pickup
+        robot.state = R_GRAB
+        robot.tnext = t + self._handling()
+        robot.task.part.t_grab[robot.route.index] = t
+        if robot.task.channel is not None:
+            robot.route.source.start_grab(robot.task.channel)
+        self.model.log(t, f"Robot{robot.id}", f"початок захоплення деталі #{robot.task.part.id} у {robot.location}")
+
+    def _start_carry(self, robot: Robot, t: float) -> None:
+        route = robot.route
+        # деталь знята з місця-джерела
+        if robot.task.channel is not None:
+            route.source.grab_done(robot.task.channel, t)
+        else:
+            route.source.grab_done(t)
+        robot.state = R_CARRY
+        robot.tnext = t + self.model.params.distance(route.pickup, route.drop)
+        self.model.log(t, f"Robot{robot.id}", f"деталь #{robot.task.part.id} захоплено, хід {route.pickup}->{route.drop}")
+
+    def _arrive(self, robot: Robot, t: float) -> None:
+        route = robot.route
+        robot.location = route.drop
+        if isinstance(route.dest, Machine):
+            slot = route.dest.take_for_release(robot.dest_slot)
+            if slot is None:
+                # маршрут заблоковано: робот тримає деталь і чекає вільного місця
+                robot.state = R_WAIT
+                robot.tnext = INF
+                route.dest.waiting_robots.append(robot)
+                self.model.log(t, f"Robot{robot.id}", f"на {route.drop} немає місця, очікування з деталлю #{robot.task.part.id}")
+                return
+            self.start_release(robot, slot, t)
+        else:
+            self.start_release(robot, None, t)
+
+    def start_release(self, robot: Robot, slot: MachineChannel | None, t: float) -> None:
+        robot.dest_slot = slot
+        robot.state = R_RELEASE
+        robot.tnext = t + self._handling()
+        self.model.log(t, f"Robot{robot.id}", f"початок вивільнення деталі #{robot.task.part.id} у {robot.location}")
+
+    def _finish(self, robot: Robot, t: float) -> None:
+        route, part = robot.route, robot.task.part
+        if isinstance(route.dest, Machine):
+            route.dest.release_done(robot.dest_slot, part, t)
+        else:
+            route.dest.accept(part, t)
+        self.model.log(t, f"Robot{robot.id}", f"вивільнив деталь #{part.id}, вільний у {robot.location}")
+        robot.state = R_FREE
+        robot.tnext = INF
+        robot.task = robot.route = robot.dest_slot = None
+
+    # --- події завершення фаз обслуговування
+    def out_act(self, t: float) -> None:
+        due = [r for r in self.robots if r.tnext == t]
+        self.model.streams.ties.shuffle(due)
+        for robot in due:
+            if robot.state == R_TO_PICKUP:
+                self._start_grab(robot, t)
+            elif robot.state == R_GRAB:
+                self._start_carry(robot, t)
+            elif robot.state == R_CARRY:
+                self._arrive(robot, t)
+            elif robot.state == R_RELEASE:
+                self._finish(robot, t)
+
+    def free_robots(self) -> list[Robot]:
+        return [r for r in self.robots if r.state == R_FREE]
+
+    # --- статистика
+    def update_stats(self, dt: float) -> None:
+        for r in self.robots:
+            r.state_time[r.state] += dt
+
+    def reset_stats(self) -> None:
+        for r in self.robots:
+            r.state_time = {s: 0.0 for s in ROBOT_STATES}
+            r.jobs = {}
+
+    def state_str(self) -> str:
+        return " ".join(f"R{r.id}:{r.state}@{r.location}" for r in self.robots)
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\model.py
+289 lines
+"""Модель роботизованої ГВС та алгоритм імітації (алгоритм 3.1/3.2 методички).
+
+Цикл імітації:
+    поки t < Tmod:
+        знайти момент найближчої події t_next = min по елементах
+        оновити статистику на інтервалі (t, t_next)
+        t := t_next
+        виконати події виходу (завершення обслуговування) усіх елементів з t_next == t,
+            у випадковому порядку; надходження зовнішніх вимог – останнім
+            (завершення обслуговування мають пріоритет над надходженням)
+        виконати події входу: призначення вільних роботів на заявки (диспетчер)
+"""
+
+from __future__ import annotations
+
+import math
+from collections import deque
+from dataclasses import dataclass
+from typing import Callable
+
+from .elements import (
+    INF, Create, Element, Machine, Part, Queue, Robot, Task, Transport, Warehouse,
+)
+from .params import DEDICATED, NEAREST, Params
+from .rng import RandomStreams
+
+
+@dataclass
+class Route:
+    """Шлях переміщення деталей."""
+
+    index: int
+    pickup: str
+    drop: str
+    source: Element
+    dest: Element
+
+    def blocked(self) -> bool:
+        """Умова блокування маршруту B(S,t): на верстаті-приймачі немає місця."""
+        return isinstance(self.dest, Machine) and not self.dest.can_dispatch_to()
+
+
+class Model:
+    def __init__(self, params: Params, seed: int = 1, trace: bool = False,
+                 trace_until: float = INF):
+        self.params = params
+        self.streams = RandomStreams(seed)
+        self.seed = seed
+        self.tcurr = 0.0
+        self.trace = trace
+        self.trace_until = trace_until
+        self.trace_lines: list[str] = []
+
+        self.tasks: dict[int, deque[Task]] = {1: deque(), 2: deque(), 3: deque()}
+        self.completed: list[Part] = []
+        self.completed_total = 0
+        self.t_stats_start = 0.0
+
+        p = params
+        self.buffer = Queue("Arrival", self, route_out=1)
+        self.create = Create("Create", self, self.buffer)
+        self.m1 = Machine("M1", self, p.m1_capacity, p.m1_time, self.streams.m1, route_out=2)
+        self.m2 = Machine("M2", self, p.m2_capacity, p.m2_time, self.streams.m2, route_out=3)
+        self.warehouse = Warehouse("Warehouse", self)
+        self.routes = {
+            1: Route(1, "A", "M1", self.buffer, self.m1),
+            2: Route(2, "M1", "M2", self.m1, self.m2),
+            3: Route(3, "M2", "W", self.m2, self.warehouse),
+        }
+
+        # роботи: початкове розташування – у точках завантаження маршрутів 1, 2, 3
+        start = ("A", "M1", "M2")
+        self.robots: list[Robot] = []
+        for k in range(p.n_robots):
+            if p.strategy == DEDICATED:
+                allowed = (k % 3 + 1,)
+            elif p.strategy == NEAREST:
+                allowed = (1, 2, 3)
+            else:
+                raise ValueError(f"Невідома стратегія: {p.strategy}")
+            self.robots.append(Robot(id=k + 1, location=start[k % 3], allowed_routes=allowed))
+
+        if p.strategy == DEDICATED:
+            # окрема одноканальна СМО для кожного маршруту
+            self.transports = [Transport(f"T{r.id}", self, [r]) for r in self.robots]
+        else:
+            self.transports = [Transport("T", self, self.robots)]
+
+        # порядок у списку: усі елементи з подіями завершення, Create – останнім
+        self.event_elements: list[Element] = [self.m1, self.m2, *self.transports]
+        self.stat_elements: list[Element] = [self.buffer, self.m1, self.m2, *self.transports]
+
+    # ------------------------------------------------------------------ сервіс
+    def log(self, t: float, who: str, what: str) -> None:
+        if self.trace and t <= self.trace_until:
+            self.trace_lines.append(f"{t:11.3f}  {who:<9} {what}")
+
+    def log_state(self, t: float) -> None:
+        if self.trace and t <= self.trace_until:
+            parts = [self.buffer.state_str(), self.m1.state_str(), self.m2.state_str(),
+                     " ".join(tr.state_str() for tr in self.transports)]
+            self.trace_lines.append(f"{'':11}  {'стан':<9} " + " | ".join(parts))
+
+    def add_task(self, task: Task) -> None:
+        self.tasks[task.route].append(task)
+
+    def record_completion(self, part: Part) -> None:
+        self.completed_total += 1
+        if self.tcurr >= self.t_stats_start:
+            self.completed.append(part)
+
+    def wip(self) -> int:
+        return self.create.created - self.completed_total
+
+    # ------------------------------------------------------------------ диспетчер
+    def dispatch(self, t: float) -> None:
+        """Події входу: призначення вільних роботів на заявки на перевезення.
+
+        Обирається пара (робот, маршрут) з найменшою відстанню холостого ходу;
+        при рівності – маршрут з меншим рангом (ближчий до складу), далі – раніше
+        готова заявка, далі – випадково. Заявки кожного маршруту – FIFO.
+        """
+        rank = self.params.route_rank
+        while True:
+            best = None
+            for tr in self.transports:
+                for robot in tr.free_robots():
+                    for r in robot.allowed_routes:
+                        queue = self.tasks[r]
+                        if not queue:
+                            continue
+                        route = self.routes[r]
+                        if route.blocked():
+                            continue
+                        key = (self.params.distance(robot.location, route.pickup), rank[r - 1],
+                               queue[0].t_ready, self.streams.ties.random())
+                        if best is None or key < best[0]:
+                            best = (key, tr, robot, r)
+            if best is None:
+                return
+            _, tr, robot, r = best
+            tr.assign(robot, self.tasks[r].popleft(), t)
+
+    # ------------------------------------------------------------------ імітація
+    def _next_event_time(self) -> float:
+        return min(self.create.next_time(), *(e.next_time() for e in self.event_elements))
+
+    def _advance_stats(self, t_to: float) -> None:
+        dt = t_to - self.tcurr
+        if dt > 0:
+            for e in self.stat_elements:
+                e.update_stats(dt)
+        self.tcurr = t_to
+
+    def reset_stats(self) -> None:
+        self.t_stats_start = self.tcurr
+        self.completed = []
+        for e in self.stat_elements:
+            e.reset_stats()
+        self._created_at_reset = self.create.created
+
+    def run(self, t_end: float, t_warmup: float = 0.0,
+            observe_every: float | None = None,
+            observer: Callable[["Model"], None] | None = None) -> "Model":
+        """Імітація до моменту t_end.
+
+        t_warmup – тривалість перехідного періоду: у цей момент статистика скидається.
+        observer – функція, що викликається кожні observe_every секунд (для аналізу
+                   перехідного періоду).
+        """
+        self.t_end = t_end
+        self._created_at_reset = 0
+        pending_reset = t_warmup > 0
+        next_obs = observe_every if observe_every else INF
+        self.dispatch(0.0)
+        self.log_state(0.0)
+        while True:
+            t_next = self._next_event_time()
+            # службові моменти: кінець перехідного періоду та спостереження
+            while True:
+                t_service = min(t_warmup if pending_reset else INF, next_obs)
+                if t_service > min(t_next, t_end):
+                    break
+                self._advance_stats(t_service)
+                if pending_reset and t_service == t_warmup:
+                    self.reset_stats()
+                    pending_reset = False
+                if t_service == next_obs:
+                    observer(self)
+                    next_obs += observe_every
+            if t_next > t_end:
+                self._advance_stats(t_end)
+                break
+            self._advance_stats(t_next)
+            t = self.tcurr
+            due = [e for e in self.event_elements if e.next_time() == t]
+            self.streams.ties.shuffle(due)
+            for e in due:
+                e.out_act(t)
+            if self.create.next_time() == t:
+                self.create.out_act(t)
+            self.dispatch(t)
+            self.log_state(t)
+        return self
+
+    # ------------------------------------------------------------------ результати
+    @property
+    def period(self) -> float:
+        return self.tcurr - self.t_stats_start
+
+    def sojourn_times(self) -> list[float]:
+        return [p.t_done - p.t_arrival for p in self.completed]
+
+    def results(self) -> dict:
+        return collect_results(self)
+
+
+def _mean(xs: list[float]) -> float:
+    return sum(xs) / len(xs) if xs else math.nan
+
+
+def _std(xs: list[float]) -> float:
+    if len(xs) < 2:
+        return math.nan
+    m = _mean(xs)
+    return math.sqrt(sum((x - m) ** 2 for x in xs) / (len(xs) - 1))
+
+
+def _quantile(sorted_xs: list[float], q: float) -> float:
+    if not sorted_xs:
+        return math.nan
+    pos = q * (len(sorted_xs) - 1)
+    lo, hi = math.floor(pos), math.ceil(pos)
+    return sorted_xs[lo] + (sorted_xs[hi] - sorted_xs[lo]) * (pos - lo)
+
+
+def collect_results(m: Model) -> dict:
+    """Вихідні змінні одного прогону (за період після перехідного)."""
+    T = m.period
+    soj = sorted(m.sojourn_times())
+    parts = m.completed
+    res: dict = {
+        "strategy": m.params.strategy,
+        "slot_policy": m.params.slot_policy,
+        "seed": m.seed,
+        "t_end": m.tcurr,
+        "t_warmup": m.t_stats_start,
+        "arrived": m.create.created - m._created_at_reset,
+        "completed": len(parts),
+        "wip_end": m.wip(),
+        "throughput_per_hour": len(parts) / T * 3600 if T > 0 else math.nan,
+        "sojourn_mean": _mean(soj),
+        "sojourn_std": _std(soj),
+        "sojourn_min": soj[0] if soj else math.nan,
+        "sojourn_p50": _quantile(soj, 0.5),
+        "sojourn_p90": _quantile(soj, 0.9),
+        "sojourn_p95": _quantile(soj, 0.95),
+        "sojourn_max": soj[-1] if soj else math.nan,
+        # очікування робота на початку кожного маршруту
+        "wait_route1_mean": _mean([p.t_grab[1] - p.t_ready[1] for p in parts]),
+        "wait_route2_mean": _mean([p.t_grab[2] - p.t_ready[2] for p in parts]),
+        "wait_route3_mean": _mean([p.t_grab[3] - p.t_ready[3] for p in parts]),
+        "buffer_max": m.buffer.max_length,
+        "buffer_mean": m.buffer.mean_length(T),
+        "buffer_end": m.buffer.length,
+    }
+    for mach in (m.m1, m.m2):
+        for k, v in mach.utilization(T).items():
+            res[f"{mach.name}_{k}"] = v
+    utils = []
+    for r in m.robots:
+        busy = sum(v for s, v in r.state_time.items() if s != "free")
+        u = busy / T if T > 0 else math.nan
+        utils.append(u)
+        res[f"robot{r.id}_util"] = u
+        for s, v in r.state_time.items():
+            if s != "free":
+                res[f"robot{r.id}_{s}"] = v / T if T > 0 else math.nan
+        for route in (1, 2, 3):
+            res[f"robot{r.id}_jobs_route{route}"] = r.jobs.get(route, 0)
+    res["robots_util_mean"] = _mean(utils)
+    return res
+
+
+def simulate(params: Params, seed: int, t_end: float, t_warmup: float = 0.0) -> tuple[dict, list[float]]:
+    """Один прогін: (вихідні змінні, масив часів проходження деталей)."""
+    m = Model(params, seed=seed).run(t_end, t_warmup)
+    return m.results(), m.sojourn_times()
+7:26 PM
+Ядро готове. Встановлюю залежності й роблю пробний прогін.
+
+
+
+Bash Sync deps and smoke-test all four configurations
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && touch src/fms/__init__.py src/fms/experiments/__init__.py && uv sync --python 3.14 2>&1 | tail -5 && uv run python -c "
+from fms.model import simulate
+from fms.params import *
+for s in (DEDICATED, NEAREST):
+  for pol in (RESERVE, PHYSICAL):
+    r,_=simulate(Params(strategy=s, slot_policy=pol), seed=1, t_end=200000, t_warmup=10000)
+    print(s,pol, {k: round(v,3) if isinstance(v,float) else v for k,v in r.items() if k in ('arrived','completed','wip_end','throughput_per_hour','sojourn_mean','buffer_max','buffer_end','M1_occupied','M2_occupied','M2_processing','robots_util_mean')})
+"
+
+OUT
+ + packaging==26.3
+ + pluggy==1.7.0
+ + pygments==2.21.0
+ + pytest==9.1.1
+ + scipy==1.18.1
+dedicated reserve {'arrived': 4730, 'completed': 3761, 'wip_end': 1073, 'throughput_per_hour': 71.261, 'sojourn_mean': 24844.833, 'buffer_max': 1070, 'buffer_end': 1067, 'M1_occupied': 1.0, 'M2_occupied': 0.962, 'M2_processing': 0.64, 'robots_util_mean': 0.555}
+dedicated physical {'arrived': 4730, 'completed': 4332, 'wip_end': 474, 'throughput_per_hour': 82.08, 'sojourn_mean': 11951.207, 'buffer_max': 468, 'buffer_end': 466, 'M1_occupied': 1.0, 'M2_occupied': 0.961, 'M2_processing': 0.74, 'robots_util_mean': 0.862}
+nearest reserve {'arrived': 4730, 'completed': 3871, 'wip_end': 959, 'throughput_per_hour': 73.345, 'sojourn_mean': 22609.868, 'buffer_max': 956, 'buffer_end': 953, 'M1_occupied': 0.983, 'M2_occupied': 0.921, 'M2_processing': 0.657, 'robots_util_mean': 0.581}
+nearest physical {'arrived': 4730, 'completed': 4095, 'wip_end': 722, 'throughput_per_hour': 77.589, 'sojourn_mean': 17318.449, 'buffer_max': 719, 'buffer_end': 716, 'M1_occupied': 0.918, 'M2_occupied': 0.9, 'M2_processing': 0.697, 'robots_util_mean': 0.914}
+Усі чотири конфігурації відпрацювали: при інтервалі 40 с система дійсно нестійка — черга на площадці прибуття зростає, а пропускна здатність лише 71–82 дет./год проти 90 дет./год на вході. Тепер перевіряю логіку за протоколом подій.
+Bash Print event trace for first 260 seconds
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run python -c "
+from fms.model import Model
+from fms.params import *
+m=Model(Params(strategy=NEAREST, slot_policy=PHYSICAL), seed=3, trace=True, trace_until=260).run(260)
+print('\n'.join(m.trace_lines))
+"
+
+OUT
+Exit code 1
+Traceback (most recent call last):
+  File "<string>", line 5, in <module>
+    print('\n'.join(m.trace_lines))
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\DmytroPonzel\AppData\Roaming\uv\python\cpython-3.14.2-windows-x86_64-none\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 13-16: character maps to <undefined>
+Bash Print event trace with UTF-8 output
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && PYTHONIOENCODING=utf-8 uv run python -c "
+from fms.model import Model
+from fms.params import *
+m=Model(Params(strategy=NEAREST, slot_policy=PHYSICAL), seed=3, trace=True, trace_until=260).run(260)
+print('\n'.join(m.trace_lines))
+"
+
+OUT
+             стан      A=0 | M1[...] | M2[...] | R1:free@A R2:free@M1 R3:free@M2
+     27.091  Create    надходження деталі #1
+     27.091  Robot1    призначено на маршрут 1 (A->M1) для деталі #1, холостий хід A->A 0
+     27.091  Robot1    початок захоплення деталі #1 у A
+             стан      A=1 | M1[...] | M2[...] | R1:grab@A R2:free@M1 R3:free@M2
+     35.699  Robot1    деталь #1 захоплено, хід A->M1
+             стан      A=0 | M1[...] | M2[...] | R1:loaded_move@A R2:free@M1 R3:free@M2
+     41.699  Robot1    початок вивільнення деталі #1 у M1
+             стан      A=0 | M1[l..] | M2[...] | R1:release@M1 R2:free@M1 R3:free@M2
+     48.998  M1        початок обробки деталі #1 (місце 0), кінець о 108.578
+     48.998  Robot1    вивільнив деталь #1, вільний у M1
+             стан      A=0 | M1[B..] | M2[...] | R1:free@M1 R2:free@M1 R3:free@M2
+     49.890  Create    надходження деталі #2
+     49.890  Robot1    призначено на маршрут 1 (A->M1) для деталі #2, холостий хід M1->A 6
+             стан      A=1 | M1[B..] | M2[...] | R1:empty_move@M1 R2:free@M1 R3:free@M2
+     55.890  Robot1    початок захоплення деталі #2 у A
+             стан      A=1 | M1[B..] | M2[...] | R1:grab@A R2:free@M1 R3:free@M2
+     64.229  Robot1    деталь #2 захоплено, хід A->M1
+             стан      A=0 | M1[B..] | M2[...] | R1:loaded_move@A R2:free@M1 R3:free@M2
+     70.229  Robot1    початок вивільнення деталі #2 у M1
+             стан      A=0 | M1[Bl.] | M2[...] | R1:release@M1 R2:free@M1 R3:free@M2
+     78.149  M1        початок обробки деталі #2 (місце 1), кінець о 124.512
+     78.149  Robot1    вивільнив деталь #2, вільний у M1
+             стан      A=0 | M1[BB.] | M2[...] | R1:free@M1 R2:free@M1 R3:free@M2
+    108.578  M1        кінець обробки деталі #1 (місце 0) -> блокування
+    108.578  Robot1    призначено на маршрут 2 (M1->M2) для деталі #1, холостий хід M1->M1 0
+    108.578  Robot1    початок захоплення деталі #1 у M1
+             стан      A=0 | M1[uB.] | M2[...] | R1:grab@M1 R2:free@M1 R3:free@M2
+    115.801  Robot1    деталь #1 захоплено, хід M1->M2
+             стан      A=0 | M1[.B.] | M2[...] | R1:loaded_move@M1 R2:free@M1 R3:free@M2
+    122.801  Robot1    початок вивільнення деталі #1 у M2
+             стан      A=0 | M1[.B.] | M2[l..] | R1:release@M2 R2:free@M1 R3:free@M2
+    122.806  Create    надходження деталі #3
+    122.806  Robot2    призначено на маршрут 1 (A->M1) для деталі #3, холостий хід M1->A 6
+             стан      A=1 | M1[.B.] | M2[l..] | R1:release@M2 R2:empty_move@M1 R3:free@M2
+    124.512  M1        кінець обробки деталі #2 (місце 1) -> блокування
+    124.512  Robot3    призначено на маршрут 2 (M1->M2) для деталі #2, холостий хід M2->M1 7
+             стан      A=1 | M1[.x.] | M2[l..] | R1:release@M2 R2:empty_move@M1 R3:empty_move@M2
+    128.806  Robot2    початок захоплення деталі #3 у A
+             стан      A=1 | M1[.x.] | M2[l..] | R1:release@M2 R2:grab@A R3:empty_move@M2
+    130.350  M2        початок обробки деталі #1 (місце 0), кінець о 172.315
+    130.350  Robot1    вивільнив деталь #1, вільний у M2
+             стан      A=1 | M1[.x.] | M2[B..] | R1:free@M2 R2:grab@A R3:empty_move@M2
+    131.512  Robot3    початок захоплення деталі #2 у M1
+             стан      A=1 | M1[.u.] | M2[B..] | R1:free@M2 R2:grab@A R3:grab@M1
+    136.169  Robot2    деталь #3 захоплено, хід A->M1
+             стан      A=0 | M1[.u.] | M2[B..] | R1:free@M2 R2:loaded_move@A R3:grab@M1
+    139.127  Robot3    деталь #2 захоплено, хід M1->M2
+             стан      A=0 | M1[...] | M2[B..] | R1:free@M2 R2:loaded_move@A R3:loaded_move@M1
+    142.169  Robot2    початок вивільнення деталі #3 у M1
+             стан      A=0 | M1[l..] | M2[B..] | R1:free@M2 R2:release@M1 R3:loaded_move@M1
+    146.127  Robot3    початок вивільнення деталі #2 у M2
+             стан      A=0 | M1[l..] | M2[Bl.] | R1:free@M2 R2:release@M1 R3:release@M2
+    150.065  M1        початок обробки деталі #3 (місце 0), кінець о 214.561
+    150.065  Robot2    вивільнив деталь #3, вільний у M1
+             стан      A=0 | M1[B..] | M2[Bl.] | R1:free@M2 R2:free@M1 R3:release@M2
+    154.038  M2        початок обробки деталі #2 (місце 1), кінець о 185.098
+    154.038  Robot3    вивільнив деталь #2, вільний у M2
+             стан      A=0 | M1[B..] | M2[BB.] | R1:free@M2 R2:free@M1 R3:free@M2
+    172.315  M2        кінець обробки деталі #1 (місце 0) -> блокування
+    172.315  Robot3    призначено на маршрут 3 (M2->W) для деталі #1, холостий хід M2->M2 0
+    172.315  Robot3    початок захоплення деталі #1 у M2
+             стан      A=0 | M1[B..] | M2[uB.] | R1:free@M2 R2:free@M1 R3:grab@M2
+    179.542  Robot3    деталь #1 захоплено, хід M2->W
+             стан      A=0 | M1[B..] | M2[.B.] | R1:free@M2 R2:free@M1 R3:loaded_move@M2
+    184.542  Robot3    початок вивільнення деталі #1 у W
+             стан      A=0 | M1[B..] | M2[.B.] | R1:free@M2 R2:free@M1 R3:release@W
+    185.098  M2        кінець обробки деталі #2 (місце 1) -> блокування
+    185.098  Robot1    призначено на маршрут 3 (M2->W) для деталі #2, холостий хід M2->M2 0
+    185.098  Robot1    початок захоплення деталі #2 у M2
+             стан      A=0 | M1[B..] | M2[.u.] | R1:grab@M2 R2:free@M1 R3:release@W
+    192.071  Warehouse деталь #1 на складі, час проходження 164.980
+    192.071  Robot3    вивільнив деталь #1, вільний у W
+             стан      A=0 | M1[B..] | M2[.u.] | R1:grab@M2 R2:free@M1 R3:free@W
+    193.116  Robot1    деталь #2 захоплено, хід M2->W
+             стан      A=0 | M1[B..] | M2[...] | R1:loaded_move@M2 R2:free@M1 R3:free@W
+    198.116  Robot1    початок вивільнення деталі #2 у W
+             стан      A=0 | M1[B..] | M2[...] | R1:release@W R2:free@M1 R3:free@W
+    205.374  Create    надходження деталі #4
+    205.374  Robot2    призначено на маршрут 1 (A->M1) для деталі #4, холостий хід M1->A 6
+             стан      A=1 | M1[B..] | M2[...] | R1:release@W R2:empty_move@M1 R3:free@W
+    206.991  Warehouse деталь #2 на складі, час проходження 157.101
+    206.991  Robot1    вивільнив деталь #2, вільний у W
+             стан      A=1 | M1[B..] | M2[...] | R1:free@W R2:empty_move@M1 R3:free@W
+    211.374  Robot2    початок захоплення деталі #4 у A
+             стан      A=1 | M1[B..] | M2[...] | R1:free@W R2:grab@A R3:free@W
+    214.561  M1        кінець обробки деталі #3 (місце 0) -> блокування
+    214.561  Robot1    призначено на маршрут 2 (M1->M2) для деталі #3, холостий хід W->M1 12
+             стан      A=1 | M1[x..] | M2[...] | R1:empty_move@W R2:grab@A R3:free@W
+    218.765  Robot2    деталь #4 захоплено, хід A->M1
+             стан      A=0 | M1[x..] | M2[...] | R1:empty_move@W R2:loaded_move@A R3:free@W
+    224.765  Robot2    початок вивільнення деталі #4 у M1
+             стан      A=0 | M1[xl.] | M2[...] | R1:empty_move@W R2:release@M1 R3:free@W
+    226.561  Robot1    початок захоплення деталі #3 у M1
+             стан      A=0 | M1[ul.] | M2[...] | R1:grab@M1 R2:release@M1 R3:free@W
+    231.888  M1        початок обробки деталі #4 (місце 1), кінець о 293.794
+    231.888  Robot2    вивільнив деталь #4, вільний у M1
+             стан      A=0 | M1[uB.] | M2[...] | R1:grab@M1 R2:free@M1 R3:free@W
+    235.533  Robot1    деталь #3 захоплено, хід M1->M2
+             стан      A=0 | M1[.B.] | M2[...] | R1:loaded_move@M1 R2:free@M1 R3:free@W
+    242.533  Robot1    початок вивільнення деталі #3 у M2
+             стан      A=0 | M1[.B.] | M2[l..] | R1:release@M2 R2:free@M1 R3:free@W
+    250.038  M2        початок обробки деталі #3 (місце 0), кінець о 382.100
+    250.038  Robot1    вивільнив деталь #3, вільний у M2
+             стан      A=0 | M1[.B.] | M2[B..] | R1:free@M2 R2:free@M1 R3:free@W
+Протокол подій коректний: правильно обирається найближчий вільний робот, при рівних відстанях вибір випадковий, а стани місць верстатів проходять потрібну послідовність. Тепер пишу тести.
+Write C:\Users\DmytroPonzel\Desktop\k\tests\test_model.py
+124 lines
+import math
+
+import pytest
+
+from fms.elements import FREE, R_FREE, R_WAIT
+from fms.model import Model, simulate
+from fms.params import DEDICATED, NEAREST, PHYSICAL, RESERVE, Params
+from fms.rng import Stream, const, exp, norm, unif
+
+ALL_VARIANTS = [(s, p) for s in (DEDICATED, NEAREST) for p in (RESERVE, PHYSICAL)]
+
+
+def deterministic(**kw) -> Params:
+    base = dict(arrival=const(1000.0), m1_time=const(60.0), m2_time=const(100.0), handling=const(8.0))
+    base.update(kw)
+    return Params(**base)
+
+
+@pytest.mark.parametrize("strategy,policy", ALL_VARIANTS)
+def test_single_part_time_is_exact(strategy, policy):
+    # 8+6+8 (A->M1) + 60 + 8+7+8 (M1->M2) + 100 + 8+5+8 (M2->W) = 226
+    m = Model(deterministic(strategy=strategy, slot_policy=policy), seed=1).run(1500)
+    assert m.sojourn_times() == [pytest.approx(226.0)]
+
+
+def test_second_part_includes_empty_return():
+    # робот 1 після доставки стоїть у M1 і повертається до A порожнім (6 с)
+    m = Model(deterministic(arrival=const(30.0)), seed=1).run(30 + 60 - 1e-9)
+    # деталь 2 надходить о 60, робот 1 звільнився о 1*30+22=52 у M1 -> холостий хід 6
+    m = Model(deterministic(arrival=const(30.0)), seed=1, trace=True).run(400)
+    lines = "\n".join(m.trace_lines)
+    assert "холостий хід M1->A 6" in lines
+
+
+@pytest.mark.parametrize("dist,mean,std", [
+    (exp(40.0), 40.0, 40.0),
+    (unif(8.0, 1.0), 8.0, 2.0 / (2 * math.sqrt(3))),
+    (norm(60.0, 10.0), 60.0, 10.0),
+])
+def test_generators_moments(dist, mean, std):
+    s = Stream(123)
+    xs = [dist.sample(s) for _ in range(200_000)]
+    m = sum(xs) / len(xs)
+    sd = math.sqrt(sum((x - m) ** 2 for x in xs) / (len(xs) - 1))
+    assert m == pytest.approx(mean, rel=0.01)
+    assert sd == pytest.approx(std, rel=0.02)
+
+
+def test_uniform_handling_bounds():
+    s = Stream(5)
+    xs = [unif(8.0, 1.0).sample(s) for _ in range(10_000)]
+    assert min(xs) >= 7.0 and max(xs) <= 9.0
+
+
+def _parts_in_system(m: Model) -> int:
+    on_machines = sum(1 for mach in (m.m1, m.m2) for ch in mach.channels if ch.part is not None)
+    carried = sum(1 for r in m.robots if r.task is not None and r.state in ("loaded_move", "wait_slot", "release"))
+    # деталі, що захоплюються з машини, ще лежать на місці (ch.part) – не рахуємо двічі
+    grabbing_from_buffer = sum(1 for r in m.robots if r.state == "grab" and r.task.channel is None)
+    return m.buffer.length + on_machines + carried + 0 * grabbing_from_buffer
+
+
+@pytest.mark.parametrize("strategy,policy", ALL_VARIANTS)
+def test_conservation_and_capacity(strategy, policy):
+    p = Params(strategy=strategy, slot_policy=policy)
+    m = Model(p, seed=7)
+    checks = []
+
+    def observer(model: Model):
+        assert model.create.created == model.completed_total + _parts_in_system(model)
+        for mach in (model.m1, model.m2):
+            assert sum(1 for ch in mach.channels if ch.state != FREE) <= mach.capacity
+        checks.append(1)
+
+    m.run(50_000, observe_every=97.0, observer=observer)
+    assert len(checks) > 400
+
+
+@pytest.mark.parametrize("strategy", [DEDICATED, NEAREST])
+def test_no_deadlock_physical_under_overload(strategy):
+    # сильне перевантаження: роботи постійно чекають місць, але система не зависає
+    p = Params(strategy=strategy, slot_policy=PHYSICAL, arrival=exp(15.0))
+    m = Model(p, seed=11)
+    done = []
+    m.run(100_000, observe_every=5_000.0, observer=lambda mm: done.append(mm.completed_total))
+    increments = [b - a for a, b in zip(done, done[1:])]
+    assert min(increments) > 0
+
+
+def test_dedicated_robots_serve_only_own_route():
+    res, _ = simulate(Params(strategy=DEDICATED), seed=3, t_end=50_000)
+    for k in (1, 2, 3):
+        for route in (1, 2, 3):
+            jobs = res[f"robot{k}_jobs_route{route}"]
+            assert (jobs > 0) if route == k else (jobs == 0)
+
+
+def test_nearest_robots_serve_several_routes():
+    res, _ = simulate(Params(strategy=NEAREST), seed=3, t_end=50_000)
+    assert all(sum(res[f"robot{k}_jobs_route{r}"] > 0 for r in (1, 2, 3)) >= 2 for k in (1, 2, 3))
+
+
+def test_reserve_policy_never_waits_with_part():
+    res, _ = simulate(Params(strategy=NEAREST, slot_policy=RESERVE, arrival=exp(20.0)), seed=2, t_end=50_000)
+    assert all(res.get(f"robot{k}_{R_WAIT}", 0.0) == 0.0 for k in (1, 2, 3))
+
+
+def test_light_load_is_stable():
+    res, _ = simulate(Params(arrival=exp(120.0)), seed=4, t_end=200_000, t_warmup=10_000)
+    assert res["wip_end"] < 15
+    assert res["throughput_per_hour"] == pytest.approx(30.0, rel=0.07)
+
+
+def test_same_seed_is_reproducible():
+    a, _ = simulate(Params(), seed=9, t_end=20_000)
+    b, _ = simulate(Params(), seed=9, t_end=20_000)
+    assert a == b
+
+
+def test_robot_free_state_at_end_is_consistent():
+    m = Model(Params(strategy=NEAREST), seed=1).run(10_000)
+    for r in m.robots:
+        assert (r.state == R_FREE) == (r.task is None)
+Bash Clean up test helpers and run test suite
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run python - <<'EOF'
+import re,pathlib
+p=pathlib.Path("tests/test_model.py"); s=p.read_text(encoding="utf-8")
+s=s.replace('''    m = Model(deterministic(arrival=const(30.0)), seed=1).run(30 + 60 - 1e-9)
+    # деталь 2 надходить о 60, робот 1 звільнився о 1*30+22=52 у M1 -> холостий хід 6
+    m = Model''','''    # деталь 2 надходить о 60, робот 1 звільнився о 30+22=52 у M1 -> холостий хід 6
+    m = Model''')
+s=s.replace('''    # деталі, що захоплюються з машини, ще лежать на місці (ch.part) – не рахуємо двічі
+    grabbing_from_buffer = sum(1 for r in m.robots if r.state == "grab" and r.task.channel is None)
+    return m.buffer.length + on_machines + carried + 0 * grabbing_from_buffer''','''    # деталь, що захоплюється, ще лежить на місці-джерелі (у черзі A або ch.part)
+    return m.buffer.length + on_machines + carried''')
+p.write_text(s,encoding="utf-8")
+EOF
+uv run pytest -q 2>&1 | tail -15
+
+OUT
+.....................                                                    [100%]
+21 passed in 2.10s
+7:27 PM
+Усі 21 тест проходять. Перш ніж писати скрипти експериментів, заміряю швидкість одного прогону.
+
+
+
+Bash Time one 200k-second simulation run
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run python -c "
+import time
+from fms.model import simulate
+from fms.params import *
+t=time.time(); simulate(Params(strategy=NEAREST, arrival=exp(50)), seed=1, t_end=200000, t_warmup=20000); print(time.time()-t)"
+
+OUT
+0.4429318904876709
+Edit C:\Users\DmytroPonzel\Desktop\k\src\fms\model.py
+Added 3 lines
+Edit C:\Users\DmytroPonzel\Desktop\k\src\fms\model.py
+Added 9 lines
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\common.py
+108 lines
+"""Спільні засоби для експериментів: серії прогонів, збереження результатів, статистика."""
+
+from __future__ import annotations
+
+import csv
+import json
+import math
+from concurrent.futures import ProcessPoolExecutor
+from pathlib import Path
+
+import numpy as np
+from scipy import stats
+
+from ..model import simulate
+from ..params import DEDICATED, NEAREST, PHYSICAL, RESERVE, Params
+
+# основні відгуки моделі
+KEY_OUTPUTS = (
+    "throughput_per_hour", "sojourn_mean", "buffer_max", "buffer_mean",
+    "M1_occupied", "M1_processing", "M2_occupied", "M2_processing",
+    "robot1_util", "robot2_util", "robot3_util", "robots_util_mean",
+)
+
+STRATEGY_LABEL = {DEDICATED: "1) закріплені", NEAREST: "2) найближчий"}
+
+
+def variants(strategy: str | None, policy: str | None) -> list[tuple[str, str]]:
+    ss = [strategy] if strategy else [DEDICATED, NEAREST]
+    ps = [policy] if policy else [RESERVE, PHYSICAL]
+    return [(s, p) for p in ps for s in ss]
+
+
+def _one(args):
+    params, seed, t_end, t_warmup, keep_sojourn = args
+    res, soj = simulate(params, seed, t_end, t_warmup)
+    return res, (soj if keep_sojourn else None)
+
+
+def replicate(params: Params, n: int, t_end: float, t_warmup: float,
+              seed0: int = 1, jobs: int = 1, keep_sojourn: bool = False):
+    """n повторних прогонів з зернами seed0..seed0+n-1.
+
+    Однакові зерна для різних варіантів дають спільні випадкові числа.
+    """
+    tasks = [(params, seed0 + i, t_end, t_warmup, keep_sojourn) for i in range(n)]
+    if jobs > 1:
+        with ProcessPoolExecutor(max_workers=jobs) as ex:
+            out = list(ex.map(_one, tasks))
+    else:
+        out = [_one(t) for t in tasks]
+    results = [r for r, _ in out]
+    sojourns = [s for _, s in out] if keep_sojourn else None
+    return results, sojourns
+
+
+def summarize(values, beta: float = 0.95) -> dict:
+    """Середнє, стандартне відхилення та довірчий інтервал (Стьюдент)."""
+    x = np.asarray([v for v in values if not (isinstance(v, float) and math.isnan(v))], dtype=float)
+    n = len(x)
+    if n == 0:
+        return {"n": 0, "mean": math.nan, "std": math.nan, "ci": math.nan}
+    mean = float(x.mean())
+    std = float(x.std(ddof=1)) if n > 1 else math.nan
+    ci = float(stats.t.ppf((1 + beta) / 2, n - 1) * std / math.sqrt(n)) if n > 1 else math.nan
+    return {"n": n, "mean": mean, "std": std, "ci": ci}
+
+
+def out_dir(path: str | Path) -> Path:
+    p = Path(path)
+    p.mkdir(parents=True, exist_ok=True)
+    return p
+
+
+def write_csv(path: Path, rows: list[dict]) -> None:
+    if not rows:
+        return
+    keys: list[str] = []
+    for r in rows:
+        for k in r:
+            if k not in keys:
+                keys.append(k)
+    with path.open("w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=keys)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def write_json(path: Path, data) -> None:
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2, default=float), encoding="utf-8")
+
+
+def fmt(v, digits: int = 3) -> str:
+    if isinstance(v, float):
+        if math.isnan(v):
+            return "—"
+        return f"{v:.{digits}f}"
+    return str(v)
+
+
+def print_table(rows: list[dict], columns: list[str], headers: list[str] | None = None) -> None:
+    headers = headers or columns
+    cells = [[fmt(r.get(c, "")) for c in columns] for r in rows]
+    widths = [max(len(h), *(len(c[i]) for c in cells)) if cells else len(h) for i, h in enumerate(headers)]
+    print("  ".join(h.ljust(w) for h, w in zip(headers, widths)))
+    print("  ".join("-" * w for w in widths))
+    for c in cells:
+        print("  ".join(v.ljust(w) for v, w in zip(c, widths)))
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\verification.py
+46 lines
+"""Верифікація моделі: варіювання вхідних змінних і перевірка логічності реакції виходів."""
+
+from __future__ import annotations
+
+from ..params import Params
+from ..rng import const, exp, norm, unif
+from .common import replicate, summarize
+
+# (назва, зміни параметрів, очікувана реакція)
+SCENARIOS = [
+    ("базовий", {}, "—"),
+    ("рідше надходження exp(80)", {"arrival": exp(80.0)},
+     "пропускна ≈ 45/год, черга A мала, завантаження ↓"),
+    ("частіше надходження exp(30)", {"arrival": exp(30.0)},
+     "перевантаження: черга A росте, пропускна обмежена M2"),
+    ("швидший M2 exp(50)", {"m2_time": exp(50.0)},
+     "M2 не вузьке місце: пропускна ≈ 90/год, час проходження ↓"),
+    ("повільніший M1 norm(120,10)", {"m1_time": norm(120.0, 10.0)},
+     "M1 стає вузьким місцем, зайнятість M1 ≈ 1"),
+    ("M2 на 6 місць", {"m2_capacity": 6},
+     "пропускна ≈ 90/год, блокування M1 зникає"),
+    ("швидке захоплення unif(2,0.5)", {"handling": unif(2.0, 0.5)},
+     "завантаження роботів ↓, пропускна ↑"),
+    ("переїзди ×3", "travel3",
+     "завантаження роботів ↑, час проходження ↑"),
+    ("детерміновані часи, exp→const(300)", {"arrival": const(300.0), "m1_time": const(60.0),
+                                            "m2_time": const(100.0), "handling": const(8.0)},
+     "час проходження = 226 с для кожної деталі"),
+]
+
+COLUMNS = ["throughput_per_hour", "sojourn_mean", "buffer_max", "buffer_mean",
+           "M1_occupied", "M2_occupied", "M2_processing", "robots_util_mean", "wip_end"]
+
+
+def run(strategy: str, policy: str, reps: int, t_end: float, t_warmup: float, jobs: int) -> list[dict]:
+    rows = []
+    for name, change, expected in SCENARIOS:
+        p = Params(strategy=strategy, slot_policy=policy)
+        p = p.scaled_travel(3.0) if change == "travel3" else p.with_(**change)
+        results, _ = replicate(p, reps, t_end, t_warmup, jobs=jobs)
+        row = {"scenario": name, "strategy": strategy, "slot_policy": policy, "expected": expected}
+        for c in COLUMNS:
+            row[c] = summarize([r[c] for r in results])["mean"]
+        rows.append(row)
+    return rows
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\warmup.py
+82 lines
+"""Визначення тривалості перехідного періоду (формули 3.1–3.2 методички).
+
+Виконується кілька (щонайменше 4) прогонів з різними зернами. Для кожного
+прогону фіксуються середні значення відгуків на інтервалі [0; t] з кроком Δ.
+Перехідний період T – момент, після якого для всіх пар прогонів
+|ȳ_i(t) − ȳ_j(t)| < ε для всіх t ≥ T.
+"""
+
+from __future__ import annotations
+
+import math
+
+from ..model import Model
+from ..params import Params
+
+METRICS = ("throughput_per_hour", "sojourn_mean", "buffer_mean", "M2_occupied", "robots_util_mean")
+
+
+def _snapshot(m: Model) -> dict:
+    t = m.tcurr
+    soj = [p.t_done - p.t_arrival for p in m.completed]
+    busy = [sum(v for s, v in r.state_time.items() if s != "free") / t for r in m.robots]
+    return {
+        "t": t,
+        "throughput_per_hour": m.completed_total / t * 3600,
+        "sojourn_mean": sum(soj) / len(soj) if soj else math.nan,
+        "buffer_mean": m.buffer.mean_length(t),
+        "M2_occupied": m.m2.utilization(t)["occupied"],
+        "robots_util_mean": sum(busy) / len(busy),
+    }
+
+
+def observe(params: Params, seeds: list[int], t_end: float, step: float) -> dict[int, list[dict]]:
+    series = {}
+    for seed in seeds:
+        snaps: list[dict] = []
+        Model(params, seed=seed).run(t_end, observe_every=step, observer=lambda m: snaps.append(_snapshot(m)))
+        series[seed] = snaps
+    return series
+
+
+def transient_time(series: dict[int, list[dict]], metric: str, eps: float) -> float:
+    """Найменший момент T, після якого max|ȳ_i(t) − ȳ_j(t)| < ε для всіх t ≥ T (або nan)."""
+    runs = list(series.values())
+    n_points = min(len(r) for r in runs)
+    T = math.nan
+    for k in range(n_points - 1, -1, -1):
+        vals = [r[k][metric] for r in runs]
+        if any(math.isnan(v) for v in vals) or max(vals) - min(vals) >= eps:
+            break
+        T = runs[0][k]["t"]
+    return T
+
+
+def run(params: Params, n_runs: int, t_end: float, step: float, eps_rel: float):
+    seeds = list(range(1, n_runs + 1))
+    series = observe(params, seeds, t_end, step)
+    rows = [{"strategy": params.strategy, "slot_policy": params.slot_policy, "seed": s, **snap}
+            for s, snaps in series.items() for snap in snaps]
+    summary = []
+    for metric in METRICS:
+        final = [snaps[-1][metric] for snaps in series.values()]
+        level = sum(final) / len(final)
+        eps = eps_rel * abs(level)
+        summary.append({
+            "strategy": params.strategy, "slot_policy": params.slot_policy, "metric": metric,
+            "final_mean": level, "eps": eps, "T_transient": transient_time(series, metric, eps),
+            # ознака відсутності стаціонарного режиму: середнє продовжує зростати
+            "growth_last_half": _growth(series, metric),
+        })
+    return rows, summary
+
+
+def _growth(series: dict[int, list[dict]], metric: str) -> float:
+    """Відносна зміна середнього відгуку між серединою та кінцем прогону."""
+    ratios = []
+    for snaps in series.values():
+        mid, last = snaps[len(snaps) // 2][metric], snaps[-1][metric]
+        if mid and not math.isnan(mid):
+            ratios.append(last / mid - 1.0)
+    return sum(ratios) / len(ratios) if ratios else math.nan
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\replications.py
+34 lines
+"""Визначення кількості повторних прогонів.
+
+За нерівністю Чебишова (3.4): p = σ² / (ε²(1 − β)); при β = 0.95 p = 20(σ/ε)².
+Для порівняння наводиться також оцінка за ЦГТ: p = (t_β·σ/ε)², t_0.95 = 1.96.
+σ оцінюється за пілотною серією прогонів.
+"""
+
+from __future__ import annotations
+
+import math
+
+from ..params import Params
+from .common import replicate, summarize
+
+RESPONSES = ("throughput_per_hour", "sojourn_mean", "buffer_max", "M2_occupied", "robots_util_mean")
+
+
+def run(params: Params, pilot: int, t_end: float, t_warmup: float, eps_rel: float,
+        beta: float, jobs: int) -> list[dict]:
+    results, _ = replicate(params, pilot, t_end, t_warmup, jobs=jobs)
+    rows = []
+    for resp in RESPONSES:
+        s = summarize([r[resp] for r in results], beta)
+        eps = eps_rel * abs(s["mean"])
+        sigma = s["std"]
+        p_cheb = math.ceil(sigma ** 2 / (eps ** 2 * (1 - beta))) if eps > 0 else math.nan
+        p_clt = math.ceil((1.959964 * sigma / eps) ** 2) if eps > 0 else math.nan
+        rows.append({
+            "strategy": params.strategy, "slot_policy": params.slot_policy, "response": resp,
+            "pilot_runs": pilot, "mean": s["mean"], "std": sigma, "eps": eps,
+            "p_chebyshev": p_cheb, "p_clt": p_clt,
+        })
+    return rows
+Ядро моделі готове, всі 21 тест проходять. Тепер допишу скрипти для експериментів: ANOVA-порівняння варіантів, пропускну здатність, розподіл часу проходження та CLI.
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\compare.py
+74 lines
+"""Порівняння способів закріплення роботів (дисперсійний аналіз, формули 3.10–3.11).
+
+Фактор – спосіб закріплення роботів (q = 2 рівні), для кожного рівня p прогонів
+зі спільними випадковими числами (однакові зерна).
+  D_f = p · Σ_j (ȳ_j − ȳ)² / (q·p − 1)          – факторна дисперсія (3.10)
+  D_r = Σ_j Σ_s (y_js − ȳ_j)² / (q(p − 1))       – залишкова дисперсія (3.11)
+  F = D_f / D_r порівнюється з F_кр(α; q−1, q(p−1)).
+Додатково (класичний однофакторний ANOVA) – F = [S_f/(q−1)] / [S_r/(q(p−1))]
+і парний t-критерій для різниць при спільних випадкових числах.
+"""
+
+from __future__ import annotations
+
+import numpy as np
+from scipy import stats
+
+from ..params import DEDICATED, NEAREST, Params
+from .common import KEY_OUTPUTS, replicate, summarize
+
+RESPONSES = ("throughput_per_hour", "sojourn_mean", "buffer_max", "buffer_mean", "robots_util_mean")
+
+
+def anova(groups: list[np.ndarray], alpha: float = 0.05) -> dict:
+    q = len(groups)
+    p = len(groups[0])
+    means = np.array([g.mean() for g in groups])
+    grand = np.concatenate(groups).mean()
+    s_f = p * ((means - grand) ** 2).sum()
+    s_r = sum(((g - g.mean()) ** 2).sum() for g in groups)
+    d_f_guide = s_f / (q * p - 1)
+    d_r = s_r / (q * (p - 1))
+    df1, df2 = q - 1, q * (p - 1)
+    f_guide = d_f_guide / d_r if d_r > 0 else np.inf
+    f_classic = (s_f / df1) / d_r if d_r > 0 else np.inf
+    f_crit = stats.f.ppf(1 - alpha, df1, df2)
+    return {
+        "S_f": s_f, "S_r": s_r, "D_f(3.10)": d_f_guide, "D_r(3.11)": d_r,
+        "F(3.10/3.11)": f_guide, "F_classic": f_classic, "F_crit": f_crit,
+        "p_value": float(stats.f.sf(f_classic, df1, df2)),
+        "significant": bool(f_classic > f_crit),
+    }
+
+
+def run(policy: str, reps: int, t_end: float, t_warmup: float, jobs: int,
+        base: Params | None = None) -> tuple[list[dict], list[dict], list[dict]]:
+    base = base or Params()
+    runs: dict[str, list[dict]] = {}
+    for strategy in (DEDICATED, NEAREST):
+        runs[strategy], _ = replicate(base.with_(strategy=strategy, slot_policy=policy), reps, t_end, t_warmup, jobs=jobs)
+
+    summary = []
+    for strategy, results in runs.items():
+        row = {"strategy": strategy, "slot_policy": policy}
+        for k in KEY_OUTPUTS:
+            s = summarize([r[k] for r in results])
+            row[k] = s["mean"]
+            row[k + "_ci"] = s["ci"]
+        summary.append(row)
+
+    tests = []
+    for resp in RESPONSES:
+        a = np.array([r[resp] for r in runs[DEDICATED]], dtype=float)
+        b = np.array([r[resp] for r in runs[NEAREST]], dtype=float)
+        res = {"response": resp, "slot_policy": policy,
+               "mean_dedicated": a.mean(), "mean_nearest": b.mean(), **anova([a, b])}
+        diff = b - a
+        t_stat, t_p = stats.ttest_rel(b, a)
+        res.update({"paired_diff_mean": diff.mean(), "paired_diff_ci": summarize(diff)["ci"],
+                    "paired_t": float(t_stat), "paired_p": float(t_p)})
+        tests.append(res)
+
+    raw = [r for results in runs.values() for r in results]
+    return summary, tests, raw
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\capacity.py
+49 lines
+"""Пропускна здатність ГВС залежно від інтенсивності надходження деталей.
+
+Для кожного середнього інтервалу надходження і кожного варіанта виконується
+серія прогонів. Режим вважається стійким, якщо вихідний потік дорівнює вхідному
+(throughput / λ ≥ 0.98) і черга на площадці прибуття не накопичується.
+"""
+
+from __future__ import annotations
+
+from ..params import Params
+from ..rng import exp
+from .common import replicate, summarize, variants
+
+DEFAULT_ARRIVALS = (34, 36, 38, 40, 42, 44, 46, 48, 50, 55, 60, 70, 80)
+RESPONSES = ("throughput_per_hour", "sojourn_mean", "buffer_max", "buffer_mean", "buffer_q99",
+             "wip_end", "M1_occupied", "M2_occupied", "M2_processing", "robots_util_mean")
+
+
+def run(arrivals, strategy, policy, reps: int, t_end: float, t_warmup: float, jobs: int) -> list[dict]:
+    rows = []
+    for s, p in variants(strategy, policy):
+        for a in arrivals:
+            params = Params(strategy=s, slot_policy=p, arrival=exp(float(a)))
+            results, _ = replicate(params, reps, t_end, t_warmup, jobs=jobs)
+            row = {"strategy": s, "slot_policy": p, "arrival_mean": a, "input_per_hour": 3600 / a}
+            for k in RESPONSES:
+                st = summarize([r[k] for r in results])
+                row[k] = st["mean"]
+                row[k + "_ci"] = st["ci"]
+            row["output_input_ratio"] = row["throughput_per_hour"] / row["input_per_hour"]
+            row["stable"] = row["output_input_ratio"] >= 0.98 and row["wip_end"] < 30
+            rows.append(row)
+    return rows
+
+
+def max_stable(rows: list[dict]) -> list[dict]:
+    """Найбільша інтенсивність надходження, за якої режим ще стійкий, і максимальний вихідний потік."""
+    out = {}
+    for r in rows:
+        key = (r["strategy"], r["slot_policy"])
+        cur = out.setdefault(key, {"strategy": key[0], "slot_policy": key[1],
+                                   "max_stable_input_per_hour": 0.0, "min_stable_arrival_mean": None,
+                                   "max_throughput_per_hour": 0.0})
+        cur["max_throughput_per_hour"] = max(cur["max_throughput_per_hour"], r["throughput_per_hour"])
+        if r["stable"] and r["input_per_hour"] > cur["max_stable_input_per_hour"]:
+            cur["max_stable_input_per_hour"] = r["input_per_hour"]
+            cur["min_stable_arrival_mean"] = r["arrival_mean"]
+    return list(out.values())
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\experiments\distribution.py
+90 lines
+"""Розподіл часу проходження деталей: гістограма, підбір закону, критерій χ².
+
+Порядок (методичка, п. 3.1.4): масив спостережень → гістограма частот →
+гіпотеза про закон → оцінка параметрів → перевірка за критерієм χ²:
+  χ² = Σ (n_i − n·p_i)² / (n·p_i),  df = k − 1 − (кількість оцінених параметрів),
+інтервали з n·p_i < 5 об'єднуються з сусідніми.
+"""
+
+from __future__ import annotations
+
+import math
+
+import numpy as np
+from scipy import stats
+
+from ..params import Params
+from .common import replicate
+
+# закон -> (розподіл scipy, фіксовані параметри при оцінці, кількість оцінених параметрів)
+CANDIDATES = {
+    "normal": (stats.norm, {}, 2),
+    "exponential (shifted)": (stats.expon, {}, 2),
+    "gamma (shifted)": (stats.gamma, {}, 3),
+    "lognormal (shifted)": (stats.lognorm, {}, 3),
+    "erlang/gamma (loc=0)": (stats.gamma, {"floc": 0.0}, 2),
+}
+
+
+def histogram(data: np.ndarray, bins: int) -> tuple[np.ndarray, np.ndarray]:
+    counts, edges = np.histogram(data, bins=bins)
+    return counts, edges
+
+
+def chi_square(data: np.ndarray, dist, params: tuple, n_params: int, bins: int) -> dict:
+    counts, edges = histogram(data, bins)
+    # крайні інтервали розширюємо до нескінченності, щоб Σ p_i = 1
+    cdf = dist.cdf(edges, *params)
+    cdf[0], cdf[-1] = 0.0, 1.0
+    probs = np.diff(cdf)
+    n = len(data)
+    obs, exp_ = [], []
+    acc_o = acc_e = 0.0
+    for o, p in zip(counts, probs):
+        acc_o += o
+        acc_e += n * p
+        if acc_e >= 5:
+            obs.append(acc_o)
+            exp_.append(acc_e)
+            acc_o = acc_e = 0.0
+    if acc_e > 0 and exp_:
+        obs[-1] += acc_o
+        exp_[-1] += acc_e
+    obs, exp_ = np.array(obs), np.array(exp_)
+    chi2 = float(((obs - exp_) ** 2 / exp_).sum())
+    df = len(obs) - 1 - n_params
+    crit = float(stats.chi2.ppf(0.95, df)) if df > 0 else math.nan
+    return {"chi2": chi2, "df": df, "chi2_crit_0.05": crit, "intervals": len(obs),
+            "accepted": bool(df > 0 and chi2 < crit)}
+
+
+def fit_all(data: np.ndarray, bins: int) -> list[dict]:
+    rows = []
+    for name, (dist, fixed, k) in CANDIDATES.items():
+        if name.startswith("exponential"):
+            params = (float(data.min()), float(data.mean() - data.min()))
+        else:
+            params = dist.fit(data, **fixed)
+        res = chi_square(data, dist, params, k, bins)
+        rows.append({"law": name, "params": ", ".join(f"{v:.4g}" for v in params), **res})
+    rows.sort(key=lambda r: r["chi2"])
+    return rows
+
+
+def run(params: Params, reps: int, t_end: float, t_warmup: float, jobs: int,
+        bins: int, thin: int) -> dict:
+    _, sojourns = replicate(params, reps, t_end, t_warmup, jobs=jobs, keep_sojourn=True)
+    # проріджування зменшує автокореляцію сусідніх деталей
+    data = np.concatenate([np.asarray(s[::thin], dtype=float) for s in sojourns])
+    counts, edges = histogram(data, bins)
+    hist = [{"left": float(edges[i]), "right": float(edges[i + 1]), "count": int(counts[i]),
+             "freq": float(counts[i] / len(data))} for i in range(len(counts))]
+    describe = {
+        "n": int(len(data)), "mean": float(data.mean()), "std": float(data.std(ddof=1)),
+        "cv": float(data.std(ddof=1) / data.mean()), "min": float(data.min()),
+        "p50": float(np.quantile(data, 0.5)), "p90": float(np.quantile(data, 0.9)),
+        "p95": float(np.quantile(data, 0.95)), "max": float(data.max()),
+        "skew": float(stats.skew(data)),
+    }
+    return {"describe": describe, "histogram": hist, "fits": fit_all(data, bins), "data": data}
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\cli.py
+211 lines
+"""Командний інтерфейс: прогони моделі та експерименти.
+
+Приклади:
+  fms run --strategy nearest --policy reserve
+  fms trace --strategy dedicated --until 600
+  fms verify --jobs 4
+  fms warmup --policy reserve
+  fms reps
+  fms compare --reps 30
+  fms capacity --reps 10 --jobs 4
+  fms dist --strategy nearest --arrival 50
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import sys
+
+from .model import Model, simulate
+from .params import DEDICATED, NEAREST, PHYSICAL, RESERVE, Params
+from .rng import exp
+from .experiments import capacity, compare, distribution, replications, verification, warmup
+from .experiments.common import out_dir, print_table, variants, write_csv, write_json
+
+
+def _params(a, strategy=None, policy=None) -> Params:
+    return Params(strategy=strategy or a.strategy or DEDICATED,
+                  slot_policy=policy or a.policy or RESERVE,
+                  arrival=exp(a.arrival))
+
+
+def cmd_run(a):
+    for s, p in variants(a.strategy, a.policy):
+        res, _ = simulate(_params(a, s, p), a.seed, a.t_end, a.warmup)
+        print(f"\n=== {s} / {p} (seed={a.seed}, Tmod={a.t_end:g}, перехідний={a.warmup:g}) ===")
+        for k, v in res.items():
+            print(f"  {k:<28} {v:.4f}" if isinstance(v, float) else f"  {k:<28} {v}")
+
+
+def cmd_trace(a):
+    d = out_dir(a.out)
+    for s, p in variants(a.strategy, a.policy):
+        m = Model(_params(a, s, p), seed=a.seed, trace=True, trace_until=a.until).run(a.until)
+        path = d / f"trace_{s}_{p}.txt"
+        header = f"Протокол подій: {m.params.describe()}, seed={a.seed}\n"
+        legend = ("Стан місць верстата: . вільне, r зарезервоване, l вивільнення робота, "
+                  "B обробка, x блоковане (чекає робота), u захоплення\n")
+        path.write_text(header + legend + "\n".join(m.trace_lines) + "\n", encoding="utf-8")
+        print(f"{s}/{p}: {len(m.trace_lines)} рядків -> {path}")
+        if a.print:
+            print("\n".join(m.trace_lines))
+
+
+def cmd_verify(a):
+    d = out_dir(a.out)
+    rows = []
+    for s, p in variants(a.strategy, a.policy):
+        part = verification.run(s, p, a.reps, a.t_end, a.warmup, a.jobs)
+        print(f"\n=== Верифікація: {s} / {p} ({a.reps} прогонів по {a.t_end:g} с) ===")
+        print_table(part, ["scenario", *verification.COLUMNS],
+                    ["сценарій", "дет/год", "Tпрох", "maxA", "серA", "M1зайн", "M2зайн", "M2обр", "роботи", "WIPкін"])
+        rows += part
+    write_csv(d / "verification.csv", rows)
+    print(f"\n-> {d / 'verification.csv'}")
+
+
+def cmd_warmup(a):
+    d = out_dir(a.out)
+    all_rows, all_summary = [], []
+    for s, p in variants(a.strategy, a.policy):
+        rows, summary = warmup.run(_params(a, s, p), a.runs, a.t_end, a.step, a.eps)
+        all_rows += rows
+        all_summary += summary
+        print(f"\n=== Перехідний період: {s} / {p} ({a.runs} прогонів, ε = {a.eps:.0%} від рівня) ===")
+        print_table(summary, ["metric", "final_mean", "eps", "T_transient", "growth_last_half"],
+                    ["відгук", "рівень", "ε", "T перех.", "приріст 2-ї пол."])
+    write_csv(d / "warmup_series.csv", all_rows)
+    write_csv(d / "warmup_summary.csv", all_summary)
+    print(f"\n-> {d / 'warmup_series.csv'}, {d / 'warmup_summary.csv'}")
+    print("Примітка: T перех. = — означає, що умова (3.1) не виконується до кінця прогону "
+          "(стаціонарний режим відсутній або потрібен довший прогін).")
+
+
+def cmd_reps(a):
+    d = out_dir(a.out)
+    rows = []
+    for s, p in variants(a.strategy, a.policy):
+        part = replications.run(_params(a, s, p), a.pilot, a.t_end, a.warmup, a.eps, 0.95, a.jobs)
+        print(f"\n=== Кількість прогонів: {s} / {p} (пілотна серія {a.pilot}, ε = {a.eps:.0%}) ===")
+        print_table(part, ["response", "mean", "std", "eps", "p_chebyshev", "p_clt"],
+                    ["відгук", "середнє", "σ", "ε", "p Чебишов", "p ЦГТ"])
+        rows += part
+    write_csv(d / "replications.csv", rows)
+    print(f"\n-> {d / 'replications.csv'}")
+
+
+def cmd_compare(a):
+    d = out_dir(a.out)
+    policies = [a.policy] if a.policy else [RESERVE, PHYSICAL]
+    all_summary, all_tests, all_raw = [], [], []
+    for p in policies:
+        summary, tests, raw = compare.run(p, a.reps, a.t_end, a.warmup, a.jobs,
+                                          base=Params(arrival=exp(a.arrival)))
+        all_summary += summary
+        all_tests += tests
+        all_raw += raw
+        print(f"\n=== Порівняння способів закріплення роботів: політика {p}, {a.reps} прогонів ===")
+        print_table(summary, ["strategy", "throughput_per_hour", "throughput_per_hour_ci", "sojourn_mean",
+                              "buffer_max", "M1_occupied", "M2_occupied", "robot1_util", "robot2_util",
+                              "robot3_util"],
+                    ["варіант", "дет/год", "±", "Tпрох", "maxA", "M1", "M2", "R1", "R2", "R3"])
+        print("\nДисперсійний аналіз (фактор – спосіб закріплення):")
+        print_table(tests, ["response", "mean_dedicated", "mean_nearest", "F_classic", "F_crit",
+                            "p_value", "significant", "paired_diff_mean", "paired_p"],
+                    ["відгук", "варіант 1", "варіант 2", "F", "F кр", "p", "значущий", "Δ(2−1)", "p парн."])
+    write_csv(d / "compare_summary.csv", all_summary)
+    write_csv(d / "compare_anova.csv", all_tests)
+    write_csv(d / "compare_raw.csv", all_raw)
+    print(f"\n-> {d}/compare_*.csv")
+
+
+def cmd_capacity(a):
+    d = out_dir(a.out)
+    arrivals = [float(x) for x in a.arrivals.split(",")] if a.arrivals else capacity.DEFAULT_ARRIVALS
+    rows = capacity.run(arrivals, a.strategy, a.policy, a.reps, a.t_end, a.warmup, a.jobs)
+    print(f"\n=== Пропускна здатність ({a.reps} прогонів на точку) ===")
+    print_table(rows, ["strategy", "slot_policy", "arrival_mean", "input_per_hour", "throughput_per_hour",
+                       "output_input_ratio", "sojourn_mean", "buffer_max", "buffer_q99", "wip_end", "stable"],
+                ["варіант", "політика", "інтервал", "вхід/год", "вихід/год", "вих/вх", "Tпрох", "maxA",
+                 "A q99", "WIPкін", "стійкий"])
+    best = capacity.max_stable(rows)
+    print("\nМежа стійкості:")
+    print_table(best, ["strategy", "slot_policy", "max_stable_input_per_hour", "min_stable_arrival_mean",
+                       "max_throughput_per_hour"],
+                ["варіант", "політика", "макс. стійкий вхід/год", "мін. інтервал", "макс. вихід/год"])
+    write_csv(d / "capacity.csv", rows)
+    write_csv(d / "capacity_limits.csv", best)
+    print(f"\n-> {d / 'capacity.csv'}, {d / 'capacity_limits.csv'}")
+
+
+def cmd_dist(a):
+    d = out_dir(a.out)
+    for s, p in variants(a.strategy, a.policy):
+        params = _params(a, s, p)
+        res = distribution.run(params, a.reps, a.t_end, a.warmup, a.jobs, a.bins, a.thin)
+        tag = f"{s}_{p}_a{a.arrival:g}"
+        print(f"\n=== Розподіл часу проходження: {s} / {p}, інтервал надходження exp({a.arrival:g}) ===")
+        print("  " + ", ".join(f"{k}={v:.2f}" if isinstance(v, float) else f"{k}={v}"
+                               for k, v in res["describe"].items()))
+        print_table(res["fits"], ["law", "params", "chi2", "df", "chi2_crit_0.05", "accepted"],
+                    ["закон", "параметри", "χ²", "df", "χ² кр", "прийнято"])
+        write_csv(d / f"dist_hist_{tag}.csv", res["histogram"])
+        write_csv(d / f"dist_fits_{tag}.csv", res["fits"])
+        write_json(d / f"dist_describe_{tag}.json", res["describe"])
+        (d / f"dist_data_{tag}.txt").write_text("\n".join(f"{x:.4f}" for x in res["data"]), encoding="utf-8")
+        print(f"-> {d}/dist_*_{tag}.*")
+
+
+def build_parser() -> argparse.ArgumentParser:
+    ap = argparse.ArgumentParser(prog="fms", description="Імітаційна модель роботизованої ГВС (B20)")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+
+    def common(sp, t_end=200_000.0, warm=20_000.0, reps=10):
+        sp.add_argument("--strategy", choices=[DEDICATED, NEAREST], help="за замовчуванням – обидві")
+        sp.add_argument("--policy", choices=[RESERVE, PHYSICAL], help="за замовчуванням – обидві")
+        sp.add_argument("--arrival", type=float, default=40.0, help="середній інтервал надходження, с")
+        sp.add_argument("--t-end", type=float, default=t_end, help="час моделювання, с")
+        sp.add_argument("--warmup", type=float, default=warm, help="перехідний період, с")
+        sp.add_argument("--reps", type=int, default=reps, help="кількість прогонів")
+        sp.add_argument("--seed", type=int, default=1)
+        sp.add_argument("--jobs", type=int, default=max(1, (os.cpu_count() or 2) - 1))
+        sp.add_argument("--out", default="results")
+
+    sp = sub.add_parser("run", help="один прогін і всі вихідні змінні"); common(sp); sp.set_defaults(f=cmd_run)
+    sp = sub.add_parser("trace", help="протокол подій"); common(sp)
+    sp.add_argument("--until", type=float, default=600.0)
+    sp.add_argument("--print", action="store_true")
+    sp.set_defaults(f=cmd_trace)
+    sp = sub.add_parser("verify", help="таблиця верифікації"); common(sp, 100_000, 10_000, 5); sp.set_defaults(f=cmd_verify)
+    sp = sub.add_parser("warmup", help="перехідний період"); common(sp, 300_000, 0)
+    sp.add_argument("--runs", type=int, default=5)
+    sp.add_argument("--step", type=float, default=1_000.0)
+    sp.add_argument("--eps", type=float, default=0.05, help="точність, частка від рівня відгуку")
+    sp.set_defaults(f=cmd_warmup)
+    sp = sub.add_parser("reps", help="кількість повторних прогонів"); common(sp)
+    sp.add_argument("--pilot", type=int, default=20)
+    sp.add_argument("--eps", type=float, default=0.02)
+    sp.set_defaults(f=cmd_reps)
+    sp = sub.add_parser("compare", help="порівняння способів закріплення + ANOVA"); common(sp, reps=30)
+    sp.set_defaults(f=cmd_compare)
+    sp = sub.add_parser("capacity", help="пропускна здатність vs інтенсивність надходження"); common(sp)
+    sp.add_argument("--arrivals", help="список середніх інтервалів через кому")
+    sp.set_defaults(f=cmd_capacity)
+    sp = sub.add_parser("dist", help="розподіл часу проходження + χ²"); common(sp, reps=20)
+    sp.add_argument("--bins", type=int, default=20)
+    sp.add_argument("--thin", type=int, default=5, help="брати кожну k-ту деталь")
+    sp.set_defaults(f=cmd_dist)
+    return ap
+
+
+def main(argv=None):
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")
+    args = build_parser().parse_args(argv)
+    args.f(args)
+
+
+if __name__ == "__main__":
+    main()
+Bash Run trace and verification commands
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv sync -q 2>&1 | tail -3; uv run fms trace --until 300 2>&1 | tail -5 && uv run fms verify --strategy nearest --policy reserve --reps 4 --jobs 6 2>&1 | tail -15
+
+OUT
+dedicated/reserve: 173 рядків -> results\trace_dedicated_reserve.txt
+nearest/reserve: 164 рядків -> results\trace_nearest_reserve.txt
+dedicated/physical: 176 рядків -> results\trace_dedicated_physical.txt
+nearest/physical: 170 рядків -> results\trace_nearest_physical.txt
+
+=== Верифікація: nearest / reserve (4 прогонів по 100000 с) ===
+сценарій                            дет/год  Tпрох      maxA      серA     M1зайн  M2зайн  M2обр  роботи  WIPкін  
+----------------------------------  -------  ---------  --------  -------  ------  ------  -----  ------  --------
+базовий                             72.290   10710.472  520.500   268.350  0.984   0.927   0.667  0.573   523.000 
+рідше надходження exp(80)           44.080   276.014    7.750     0.461    0.494   0.558   0.404  0.347   3.250   
+частіше надходження exp(30)         72.280   21695.392  1338.250  728.334  0.984   0.927   0.667  0.573   1343.000
+швидший M2 exp(50)                  89.640   1318.772   62.750    28.797   0.955   0.753   0.411  0.716   53.500  
+повільніший M1 norm(120,10)         59.850   18274.243  865.000   460.001  0.994   0.754   0.547  0.471   868.250 
+M2 на 6 місць                       90.980   675.029    37.250    11.156   0.927   0.598   0.416  0.728   17.000  
+швидке захоплення unif(2,0.5)       85.130   3473.224   174.000   83.092   0.989   0.927   0.782  0.383   172.000 
+переїзди ×3                         53.530   22032.981  1037.750  554.433  0.942   0.874   0.492  0.812   1041.750
+детерміновані часи, exp→const(300)  12.000   244.000    1.000     0.087    0.120   0.146   0.111  0.093   1.000   
+
+-> results\verification.csv
+Таблиця верифікації працює коректно — розбіжність у 244 с проти очікуваних 226 пояснюється тим, що я не врахував порожній зворотний хід роботів (18 с). Виправляю очікування й переходжу до порівняння варіантів.
+Bash Fix expected text and run strategy comparison
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && sed -i 's|"час проходження = 226 с для кожної деталі"|"перша деталь 226 с, решта 244 с (226 + холості ходи 6+7+5)"|' src/fms/experiments/verification.py && grep -n "244" src/fms/experiments/verification.py && time uv run fms compare --reps 20 2>&1 | tail -30
+
+OUT
+28:     "перша деталь 226 с, решта 244 с (226 + холості ходи 6+7+5)"),
+варіант    дет/год  ±      Tпрох      maxA      M1     M2     R1     R2     R3   
+---------  -------  -----  ---------  --------  -----  -----  -----  -----  -----
+dedicated  70.208   0.255  24578.044  1101.850  1.000  0.965  0.546  0.585  0.507
+nearest    72.296   0.253  21999.206  986.950   0.984  0.929  0.573  0.572  0.574
+
+Дисперсійний аналіз (фактор – спосіб закріплення):
+відгук               варіант 1  варіант 2  F        F кр   p      значущий  Δ(2−1)     p парн.
+-------------------  ---------  ---------  -------  -----  -----  --------  ---------  -------
+throughput_per_hour  70.208     72.296     147.930  4.098  0.000  True      2.088      0.000  
+sojourn_mean         24578.044  21999.206  21.678   4.098  0.000  True      -2578.838  0.000  
+buffer_max           1101.850   986.950    21.849   4.098  0.000  True      -114.900   0.000  
+buffer_mean          608.593    544.609    17.908   4.098  0.000  True      -63.984    0.000  
+robots_util_mean     0.546      0.573      385.779  4.098  0.000  True      0.027      0.000  
+
+=== Порівняння способів закріплення роботів: політика physical, 20 прогонів ===
+варіант    дет/год  ±      Tпрох      maxA     M1     M2     R1     R2     R3   
+---------  -------  -----  ---------  -------  -----  -----  -----  -----  -----
+dedicated  80.844   0.302  11741.922  515.550  1.000  0.963  1.000  0.992  0.584
+nearest    76.530   0.297  16873.247  751.350  0.922  0.906  0.911  0.913  0.912
+
+Дисперсійний аналіз (фактор – спосіб закріплення):
+відгук               варіант 1  варіант 2  F          F кр   p      значущий  Δ(2−1)    p парн.
+-------------------  ---------  ---------  ---------  -----  -----  --------  --------  -------
+throughput_per_hour  80.844     76.530     455.599    4.098  0.000  True      -4.314    0.000  
+sojourn_mean         11741.922  16873.247  78.748     4.098  0.000  True      5131.325  0.000  
+buffer_max           515.550    751.350    82.618     4.098  0.000  True      235.800   0.000  
+buffer_mean          286.395    414.798    69.938     4.098  0.000  True      128.404   0.000  
+robots_util_mean     0.859      0.912      10437.905  4.098  0.000  True      0.053     0.000  
+
+-> results/compare_*.csv
+
+real	0m29.501s
+user	0m0.108s
+sys	0m0.154s
+Обидва режими дають статистично значущу, але протилежну різницю: у reserve кращий варіант 2 (+2,1 дет./год), у physical — варіант 1 (+4,3 дет./год), бо закріплений робот біля повного верстата працює як додаткове буферне місце. Перевіряю решту команд.
+Bash Run capacity sweep and warmup analysis
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && time uv run fms capacity --reps 6 2>&1 | tail -12 && uv run fms warmup --strategy nearest --policy reserve --arrival 50 --t-end 200000 2>&1 | tail -9 && uv run fms warmup --strategy nearest --policy reserve --t-end 200000 2>&1 | tail -9
+
+OUT
+nearest    physical  70        51.429    51.717     1.006   295.308    9.667     5.500     3.667     True   
+nearest    physical  80        45.000    45.327     1.007   274.484    7.333     3.167     4.333     True   
+
+Межа стійкості:
+варіант    політика  макс. стійкий вхід/год  мін. інтервал  макс. вихід/год
+---------  --------  ----------------------  -------------  ---------------
+dedicated  reserve   65.455                  55             70.343         
+nearest    reserve   65.455                  55             72.417         
+dedicated  physical  78.261                  46             80.940         
+nearest    physical  75.000                  48             76.747         
+
+-> results\capacity.csv, results\capacity_limits.csv
+
+real	3m57.735s
+user	0m0.171s
+sys	0m0.499s
+-------------------  --------  -------  ---------  ----------------
+throughput_per_hour  71.467    3.573    87000.000  0.017           
+sojourn_mean         2072.353  103.618  —          0.298           
+buffer_mean          36.195    1.810    —          0.356           
+M2_occupied          0.915     0.046    99000.000  0.009           
+robots_util_mean     0.567     0.028    88000.000  0.016           
+
+-> results\warmup_series.csv, results\warmup_summary.csv
+Примітка: T перех. = — означає, що умова (3.1) не виконується до кінця прогону (стаціонарний режим відсутній або потрібен довший прогін).
+-------------------  ---------  --------  ---------  ----------------
+throughput_per_hour  72.313     3.616     21000.000  0.007           
+sojourn_mean         20325.763  1016.288  —          0.983           
+buffer_mean          501.173    25.059    —          0.969           
+M2_occupied          0.926      0.046     28000.000  0.001           
+robots_util_mean     0.574      0.029     22000.000  0.006           
+
+-> results\warmup_series.csv, results\warmup_summary.csv
+Примітка: T перех. = — означає, що умова (3.1) не виконується до кінця прогону (стаціонарний режим відсутній або потрібен довший прогін).
+Пропускна здатність стабілізується через 21–28 тис. с, а черга та час проходження при 40 с не стабілізуються взагалі, тож піднімаю перехідний період за замовчуванням до 30 000 с. Також виправляю повільну розгортку (4 хв через повторне створення пулу процесів), переходячи на один спільний пул на весь експеримент.
+Bash Use one process pool per experiment and re-time capacity
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run python - <<'EOF'
+import pathlib
+p=pathlib.Path("src/fms/experiments/common.py"); s=p.read_text(encoding="utf-8")
+old=s[s.index("def replicate("):s.index("def summarize(")]
+new='''def run_batch(tasks: list[tuple], jobs: int = 1) -> list[tuple[dict, list[float] | None]]:
+    """Виконати набір прогонів (params, seed, t_end, t_warmup, keep_sojourn), за потреби паралельно."""
+    if jobs > 1 and len(tasks) > 1:
+        with ProcessPoolExecutor(max_workers=jobs) as ex:
+            return list(ex.map(_one, tasks, chunksize=max(1, len(tasks) // (4 * jobs))))
+    return [_one(t) for t in tasks]
+
+
+def replicate(params: Params, n: int, t_end: float, t_warmup: float,
+              seed0: int = 1, jobs: int = 1, keep_sojourn: bool = False):
+    """n повторних прогонів з зернами seed0..seed0+n-1.
+
+    Однакові зерна для різних варіантів дають спільні випадкові числа.
+    """
+    tasks = [(params, seed0 + i, t_end, t_warmup, keep_sojourn) for i in range(n)]
+    out = run_batch(tasks, jobs)
+    results = [r for r, _ in out]
+    sojourns = [s for _, s in out] if keep_sojourn else None
+    return results, sojourns
+
+
+'''
+s=s.replace(old,new); p.write_text(s,encoding="utf-8")
+
+p=pathlib.Path("src/fms/experiments/capacity.py"); s=p.read_text(encoding="utf-8")
+old=s[s.index("def run("):s.index("def max_stable(")]
+new='''def run(arrivals, strategy, policy, reps: int, t_end: float, t_warmup: float, jobs: int) -> list[dict]:
+    points = [(s, p, a) for s, p in variants(strategy, policy) for a in arrivals]
+    tasks = [(Params(strategy=s, slot_policy=p, arrival=exp(float(a))), seed, t_end, t_warmup, False)
+             for s, p, a in points for seed in range(1, reps + 1)]
+    out = run_batch(tasks, jobs)
+    rows = []
+    for i, (s, p, a) in enumerate(points):
+        results = [r for r, _ in out[i * reps:(i + 1) * reps]]
+        row = {"strategy": s, "slot_policy": p, "arrival_mean": a, "input_per_hour": 3600 / a}
+        for k in RESPONSES:
+            st = summarize([r[k] for r in results])
+            row[k] = st["mean"]
+            row[k + "_ci"] = st["ci"]
+        row["output_input_ratio"] = row["throughput_per_hour"] / row["input_per_hour"]
+        row["stable"] = row["output_input_ratio"] >= 0.98 and row["wip_end"] < 30
+        rows.append(row)
+    return rows
+
+
+'''
+s=s.replace(old,new).replace("from .common import replicate, summarize, variants","from .common import run_batch, summarize, variants")
+p.write_text(s,encoding="utf-8")
+
+p=pathlib.Path("src/fms/cli.py"); s=p.read_text(encoding="utf-8")
+s=s.replace("def common(sp, t_end=200_000.0, warm=20_000.0, reps=10):","def common(sp, t_end=200_000.0, warm=30_000.0, reps=10):")
+p.write_text(s,encoding="utf-8")
+EOF
+time uv run fms capacity --reps 6 --arrivals 40,50,60 2>&1 | tail -8
+
+OUT
+варіант    політика  макс. стійкий вхід/год  мін. інтервал  макс. вихід/год
+---------  --------  ----------------------  -------------  ---------------
+dedicated  reserve   60.000                  60.000         70.376         
+nearest    reserve   60.000                  60.000         72.424         
+dedicated  physical  72.000                  50.000         80.968         
+nearest    physical  72.000                  50.000         76.765         
+
+-> results\capacity.csv, results\capacity_limits.csv
+
+real	0m20.450s
+user	0m0.046s
+sys	0m0.091s
+7:36 PM
+Тепер перевіряю розподіл часу проходження (при стійкому інтервалі 60 с) і розрахунок кількості прогонів.
+
+
+
+Bash Run distribution fit and replications count
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run fms dist --strategy nearest --policy reserve --arrival 60 2>&1 | tail -12 && uv run fms reps --strategy nearest --policy reserve 2>&1 | tail -9
+
+OUT
+=== Розподіл часу проходження: nearest / reserve, інтервал надходження exp(60) ===
+  n=11385, mean=393.18, std=221.76, cv=0.56, min=112.75, p50=328.91, p90=696.21, p95=843.49, max=1607.88, skew=1.59
+закон                  параметри             χ²        df  χ² кр   прийнято
+---------------------  --------------------  --------  --  ------  --------
+gamma (shifted)        1.791, 112.6, 155.3   161.054   15  24.996  False   
+lognormal (shifted)    0.7433, 98.17, 226.8  165.183   16  26.296  False   
+erlang/gamma (loc=0)   3.899, 0, 100.8       894.961   14  23.685  False   
+exponential (shifted)  112.8, 280.4          1227.248  17  27.587  False   
+normal                 393.2, 221.8          5303.890  11  19.675  False   
+-> results/dist_*_nearest_reserve_a60.*
+відгук               середнє    σ         ε        p Чебишов  p ЦГТ
+-------------------  ---------  --------  -------  ---------  -----
+throughput_per_hour  72.321     0.529     1.446    3          1    
+sojourn_mean         22985.138  1786.838  459.703  303        59   
+buffer_max           986.950    77.522    19.739   309        60   
+M2_occupied          0.929      0.003     0.019    1          1    
+robots_util_mean     0.573      0.004     0.011    3          1    
+
+-> results\replications.csv
+Обидва варіанти працюють; χ² на вибірці ~11 тис. відкидає всі закони (очікувано для такого обсягу), найближчим виявився зсунутий гамма-розподіл. Додаю опцію --max-n для тестування на меншій підвибірці (n ≥ 100), як прийнято в методичці, після чого напишу README.
+Bash Add sample-size limit to distribution test and rerun
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run python - <<'EOF'
+import pathlib
+p=pathlib.Path("src/fms/experiments/distribution.py"); s=p.read_text(encoding="utf-8")
+s=s.replace('''        bins: int, thin: int) -> dict:''','''        bins: int, thin: int, max_n: int = 0) -> dict:''')
+s=s.replace('''    data = np.concatenate([np.asarray(s[::thin], dtype=float) for s in sojourns])
+''','''    data = np.concatenate([np.asarray(s[::thin], dtype=float) for s in sojourns])
+    if max_n and len(data) > max_n:
+        # рівномірна підвибірка: при дуже великих n критерій χ² відкидає будь-яку гіпотезу
+        data = data[np.linspace(0, len(data) - 1, max_n).astype(int)]
+''')
+p.write_text(s,encoding="utf-8")
+p=pathlib.Path("src/fms/cli.py"); s=p.read_text(encoding="utf-8")
+s=s.replace("a.jobs, a.bins, a.thin)","a.jobs, a.bins, a.thin, a.max_n)")
+s=s.replace('''    sp.add_argument("--thin", type=int, default=5, help="брати кожну k-ту деталь")''','''    sp.add_argument("--thin", type=int, default=5, help="брати кожну k-ту деталь")
+    sp.add_argument("--max-n", type=int, default=0, help="обмежити обсяг вибірки (0 – усі)")''')
+p.write_text(s,encoding="utf-8")
+EOF
+uv run fms dist --strategy nearest --policy reserve --arrival 60 --max-n 500 --bins 12 2>&1 | tail -8
+
+OUT
+закон                  параметри             χ²      df  χ² кр   прийнято
+---------------------  --------------------  ------  --  ------  --------
+gamma (shifted)        1.516, 132.2, 169.9   7.386   5   11.070  True    
+lognormal (shifted)    0.7534, 106.5, 216.8  17.585  7   14.067  False   
+erlang/gamma (loc=0)   4.132, 0, 94.3        23.342  6   12.592  False   
+exponential (shifted)  133.2, 256.4          27.066  8   15.507  False   
+normal                 389.7, 210.1          72.945  5   11.070  False   
+-> results/dist_*_nearest_reserve_a60.*
+Write C:\Users\DmytroPonzel\Desktop\k\README.md
+70 lines
+# Імітаційна модель роботизованої ГВС (варіант B20)
+
+Імітаційна модель експериментальної роботизованої гнучкої виробничої системи на основі формального
+опису **мережею масового обслуговування**. Алгоритм імітації власний (подійний, з просуванням часу
+до найближчої події), без спеціалізованих бібліотек імітації.
+
+## Запуск
+
+```bash
+uv sync
+uv run pytest            # тести
+uv run fms --help        # перелік команд
+```
+
+| Команда | Що робить | Результат у `results/` |
+|---|---|---|
+| `fms run` | один прогін, усі вихідні змінні | — (консоль) |
+| `fms trace --until 600` | протокол подій (для додатку) | `trace_*.txt` |
+| `fms verify` | таблиця верифікації (варіювання вхідних змінних) | `verification.csv` |
+| `fms warmup` | перехідний період за формулою (3.1), ≥4 прогони | `warmup_series.csv`, `warmup_summary.csv` |
+| `fms reps` | кількість прогонів p = 20(σ/ε)² (і за ЦГТ) | `replications.csv` |
+| `fms compare` | порівняння способів закріплення роботів + ANOVA | `compare_*.csv` |
+| `fms capacity` | пропускна здатність залежно від інтервалу надходження | `capacity*.csv` |
+| `fms dist --arrival 60 --max-n 500` | розподіл часу проходження, критерій χ² | `dist_*` |
+
+Спільні параметри: `--strategy dedicated|nearest`, `--policy reserve|physical` (якщо не задано —
+усі комбінації), `--arrival` (середній інтервал, с), `--t-end`, `--warmup`, `--reps`, `--seed`, `--jobs`.
+
+## Структура
+
+```
+src/fms/
+  rng.py        генератори: exp = −m·ln ζ, unif(d,s), norm – полярний метод Марсальї; окремі потоки
+  params.py     вхідні змінні та параметри
+  elements.py   елементи мережі МО: Create, Queue, Machine, Transport (роботи), Warehouse
+  model.py      алгоритм імітації, диспетчер роботів, збір статистики
+  cli.py        командний інтерфейс
+  experiments/  verification, warmup, replications, compare, capacity, distribution
+tests/          перевірки коректності алгоритму
+```
+
+## Відповідність формалізму
+
+| Об'єкт системи | Елемент мережі МО |
+|---|---|
+| надходження деталей exp(40) | зовнішнє надходження `Create` |
+| місце зберігання на ділянці прибуття | необмежена черга `Queue` (фіксується максимум) |
+| верстат 1 / 2 (до 3 деталей) | 3-канальна СМО без черги `Machine`; канал після обробки **блокований**, доки деталь не захопить робот |
+| роботи | СМО транспортування `Transport`: варіант 1 – три 1-канальні СМО (кожна свій маршрут), варіант 2 – одна 3-канальна СМО з вибором найближчого каналу |
+| склад | вихід з мережі `Warehouse` |
+| «на верстаті немає місця» | блокування маршруту B(S,t) |
+
+Обслуговування роботом складається з фаз: холостий хід до точки завантаження → захоплення unif(8,1) →
+хід з деталлю → [очікування місця] → вивільнення unif(8,1). Місце на верстаті-джерелі звільняється
+по завершенні захоплення; обробка починається по завершенні вивільнення.
+
+## Припущення моделі
+
+1. Пункти розташовані на лінії A – M1 – M2 – W; відстані A–M2 = 13, M1–W = 12, A–W = 18 с.
+2. Робот після вивільнення залишається в точці призначення.
+3. Варіант 2: обирається пара (вільний робот, заявка) з найменшою відстанню холостого ходу; при
+   рівності – маршрут ближчий до складу (M2→W, потім M1→M2, потім A→M1), далі – раніша заявка, далі – випадково.
+4. Політика місць на верстаті (`--policy`):
+   - `reserve` – робот призначається лише якщо на верстаті-приймачі є вільне місце, воно резервується
+     в момент призначення (взаємне блокування неможливе);
+   - `physical` – місце займається лише при вивільненні; робот з деталлю чекає біля заповненого
+     верстата; на кожен верстат допускається не більше одного «зайвого» робота (запобігає взаємному блокуванню).
+5. Час обробки на M1 – усічений нормальний закон (значення ≤ 0 відкидаються).
+6. Одночасні події виконуються у випадковому порядку; завершення обслуговування – раніше за надходження.
+Bash Run tests and a final CLI smoke check
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run pytest -q 2>&1 | tail -3 && uv run fms run --strategy nearest --policy reserve 2>&1 | head -12
+
+OUT
+.....................                                                    [100%]
+21 passed in 1.86s
+
+=== nearest / reserve (seed=1, Tmod=200000, перехідний=30000) ===
+  strategy                     nearest
+  slot_policy                  reserve
+  seed                         1
+  t_end                        200000.0000
+  t_warmup                     30000.0000
+  arrived                      4237
+  completed                    3470
+  wip_end                      959
+  throughput_per_hour          73.4824
+  sojourn_mean                 24593.1624
+7:38 PM
+Я написав модель на основі мережі масового обслуговування разом зі скриптами експериментів. Усі 21 тест проходять, кожна команда CLI відпрацювала на реальних прогонах.
+
+Що зроблено
+
+Модель: власний подійний алгоритм за схемою 3.1/3.2 методички. Обидва варіанти закріплення роботів і обидва режими місць (reserve / physical) задаються параметрами. Як моделюється кожен вузол системи, описано в README.md.
+Генератори: exp = −m·ln ζ, рівномірний закон для 8±1 с, нормальний полярним методом Марсальї. Кожне джерело випадковості має окремий потік, тож однакові зерна дають спільні випадкові числа при порівнянні варіантів.
+Вихідні характеристики:
+пропускна здатність;
+час проходження: масив значень, середнє, квантилі;
+очікування робота на кожному маршруті;
+завантаження кожного робота з розбивкою за фазами;
+завантаження верстатів: обробка, блокування, захоплення/вивільнення;
+площадка прибуття: максимум, середнє, місткість, якої вистачає у 95% і 99% часу.
+Команди для записки: trace (протокол подій), verify (таблиця верифікації), warmup, reps, compare (з ANOVA), capacity, dist (з χ²). Список і запуск — у README.md. У results/ лежать пробні виходи; частину з них порахував із зменшеною кількістю прогонів, тож для записки їх треба перезапустити.
+Найважливіше: при інтервалі надходження 40 с система нестійка в усіх чотирьох конфігураціях. На вході 90 дет./год, а на виході лише 70–81. Вузьке місце — M2: кожна деталь займає на ньому місце мінімум 116 с. Через це:
+
+черга на площадці прибуття росте без обмеження, тому «максимальна місткість» залежить від тривалості прогону;
+перехідний період за умовою (3.1) для черги й часу проходження не визначається. Для пропускної здатності він становить приблизно 21–28 тис. с, тому перехідний період за замовчуванням я поставив 30 000 с.
+Методичка для такого випадку радить змінити відгук або параметри. Тому розподіл часу проходження і місткість площадки має сенс рахувати в стійкому режимі, наприклад при інтервалі 60 с. Варто погодити це з викладачем.
+
+Пробні результати порівняння варіантів (20 прогонів, інтервал 40 с, усі різниці статистично значущі):
+
+Режим місць	Варіант 1 (закріплені)	Варіант 2 (найближчий)
+reserve	70,2 дет./год	72,3 дет./год
+physical	80,8 дет./год	76,5 дет./год
+Висновок залежить від режиму: з резервуванням кращий варіант 2, а без резервування — варіант 1.
+Причина для physical: закріплений робот, який тримає деталь біля повного верстата, фактично працює як додаткове місце буфера.
+Межа стійкості за пробною розгорткою (6 прогонів на точку, тому межі приблизні):
+
+reserve: інтервал приблизно 55–60 с;
+physical: приблизно 46–48 с.
+Розподіл часу проходження (варіант 2, reserve, інтервал 60 с): середнє 393 с, σ = 222 с.
+
+На підвибірці з 500 значень χ² приймає лише зсунутий гамма-розподіл.
+На повній вибірці (~11 тис. значень) χ² відкидає всі закони, що звично для такого обсягу. Тому я додав опцію --max-n для підвибірки.
+Одна моя помилка, яку тест виявив і я виправив. У детермінованому сценарії верифікації я очікував 226 с на деталь, а модель дала 244 с. Права модель: роботи після доставки стоять у точці призначення й повертаються порожніми, а це ще 6 + 7 + 5 с.
+
+Наступний крок — графіки й записка, коли скажеш.
+
+
+
+README.md
+пропиши десть в документі детально що означає кожен із параметрів при запуску fms run
+Read C:\Users\DmytroPonzel\Desktop\k\README.md (lines 2-31)
+Edit C:\Users\DmytroPonzel\Desktop\k\README.md
+Added 96 lines
+8:21 PM
+У README.md з'явився розділ «Команда fms run». У ньому три частини:
+
+Приклади запуску: усі чотири комбінації, одна комбінація, зі зміненим інтервалом надходження, тривалістю прогону та зерном.
+Таблиця параметрів запуску:
+--strategy: два способи закріплення роботів.
+--policy: різниця між reserve і physical, тобто коли деталь займає місце на верстаті.
+--arrival, --t-end, --warmup, --seed: що кожен означає і яке значення за замовчуванням.
+--reps, --jobs, --out: позначив, що для run вони не діють, бо потрібні іншим командам.
+Окремо пояснив, що часи обробки, переїздів і кількість місць задаються в params.py і за замовчуванням відповідають умові завдання.
+Опис кожної вихідної змінної, згрупований за змістом:
+потоки деталей і пропускна здатність;
+час проходження та очікування робота на кожному маршруті;
+площадка прибуття, зокрема buffer_max як шукана максимальна місткість;
+верстати і роботи з розбивкою часу за станами, плюс формули, як складові дають загальний коефіцієнт використання.
+Назви змінних звірив з тим, що реально друкує fms run.
+
+
+
+README.md#21-21
+питання, я не розумію навіщо нам так багато команд, це ж просто різні виводи і порівняння одного і того самого, не видаляй, просто скаи нащо воно тобі?
+
+а також, навіщо робити 20 прогонів, наприклад, якщо і так там стоїть сід і результат на кожному прогоні буде однаковий
+Show more
+8:30 PM
+Так, усі команди запускають одну й ту саму модель. Окремі вони тому, що кожна дає матеріал для свого пункту записки, а методичка вимагає їх усі.
+
+Команда	Пункт записки / вимога методички	Що вона дає
+run	— (для себе)	Один прогін, щоб подивитися всі числа й налагодити модель.
+trace	Розділ 3, додаток: обов'язковий «фрагмент протоколу подій, який доводить правильність алгоритму»	Покроковий журнал подій (хто, коли, що змінилось).
+verify	Розділ 3: «таблиця верифікації», яку роблять варіюванням вхідних змінних	Таблиця «змінив параметр → вихід змінився логічно».
+warmup	Розділ 4: перехідний період за формулою (3.1), щонайменше 4 прогони	Момент, після якого можна збирати статистику. Саме ця команда показала, що при інтервалі 40 с черга не стабілізується.
+reps	Розділ 4: кількість прогонів за формулою p = 20(σ/ε)²	Обґрунтування, скільки прогонів брати в основних експериментах.
+compare	Головне питання завдання: який спосіб закріплення кращий; методичка радить ANOVA	Таблиця варіант 1 / варіант 2 з довірчими інтервалами і F-критерієм.
+capacity	Та сама «пропускна здатність», але як залежність	Межа стійкості для кожного варіанта. Без неї при 40 с обидва варіанти просто «захлинаються».
+dist	Завдання: «знайдіть розподіл часу проходження»; методичка: гістограма → гіпотеза → χ²	Гістограма і закон розподілу.
+Тобто це не дублювання. Кожен експеримент має свою процедуру (свою серію прогонів і свою статистику), і я виніс кожну в окрему команду, щоб для записки її можна було перезапустити одним рядком.
+
+Про 20 прогонів і seed. Результати 20 прогонів різні: --seed задає лише перше зерно серії. Прогін i отримує зерно seed + i, тобто 1, 2, …, 20 (функція replicate у common.py). Однаковим буде лише повторний запуск усієї серії з тим самим --seed. Тому seed тут потрібен для відтворюваності: викладач запустить і отримає ті самі цифри.
+
+Навіщо взагалі кілька прогонів:
+
+Один прогін — одна випадкова реалізація. Наприклад, buffer_max між прогонами коливається приблизно ±80 деталей (σ ≈ 77 з команди reps). З одного прогону не видно, чи різниця між варіантами реальна, чи це випадковість.
+Методичка вимагає прямо: результат експерименту має бути середнім повторних замірів, а їх кількість рахують за p = 20(σ/ε)².
+ANOVA без повторів неможлива: F-критерій порівнює розкид між варіантами з розкидом всередині варіанта, а розкид всередині дає лише серія прогонів.
+Спільні випадкові числа: обидва варіанти проганяються на тих самих зернах 1…20, тобто на однакових потоках надходжень і часів обробки. Різниця між ними тоді пояснюється способом закріплення, а не тим, що одному «пощастило» з потоком деталей.
+
+
+distribution.py#54-54
+я запустив dist  і в мене ні один закон розподілу не підтвердився
+
+чомусь є 15к деталей, скліьки часу тривав експеримент по дефолту?
+8:40 PM
+За замовчуванням dist запускає 20 прогонів по 200 000 с модельного часу. Перші 30 000 с кожного прогону (перехідний період) відкидаються, тож статистика збирається з 170 000 с на прогін, разом 3,4 млн с (близько 945 год). У кожному прогоні на склад доходить приблизно 3300 деталей, а з них береться кожна п'ята (--thin 5, щоб зменшити залежність між сусідніми деталями). Звідси твої ~15 тис. значень.
+
+Жоден закон не підтвердився з двох причин.
+
+За замовчуванням інтервал надходження 40 с, а при ньому система нестійка. Черга на площадці прибуття росте весь прогін, тому кожна наступна деталь проходить систему довше за попередню. Час проходження постійно зростає, і в нього немає одного розподілу, який можна було б перевірити. Тому розподіл треба шукати в стійкому режимі, наприклад при --arrival 60.
+При n ≈ 15 тис. χ² відкидає будь-який закон. Зі збільшенням вибірки критерій стає настільки чутливим, що помічає навіть найменшу різницю між даними і теоретичною кривою. Методичка вимагає n ≥ 100, а розумний обсяг — кілька сотень значень.
+Ось запуск, який раніше дав прийнятий закон:
+
+
+uv run fms dist --strategy nearest --policy reserve --arrival 60 --max-n 500 --bins 12
+Тут прийнявся зсунутий гамма-розподіл: χ² = 7,4 при критичному 11,07. Інші закони (нормальний, експоненціальний, логнормальний, Ерланга) відкинуто.
+
+Можу змінити значення за замовчуванням для dist на --arrival 60 --max-n 500 --bins 12, щоб простий запуск без параметрів одразу давав коректний результат. Зробити?
+
+
+
+дай можливість побудувати графік гістограми з резульатту
+dataviz skill
+Bash Read palette hex values and static chart guidance
+IN
+cd "C:/Users/DMYTRO~1/AppData/Local/Temp/claude/bundled-skills/2.1.306/ba471a38ae3d96e5d9b9200120395e46/dataviz/references" && grep -n -i -E "#[0-9a-f]{6}" palette.md | head -40; grep -n -i -A3 "static\|matplotlib\|png" marks-and-anatomy.md | head -30
+
+OUT
+18:  --surface-1:      #fcfcfb;   /* chart surface */
+19:  --text-primary:   #0b0b0b;
+20:  --text-secondary: #52514e;
+21:  --series-1:       #2a78d6;   /* categorical slot 1 */
+27:    --surface-1:      #1a1a19;
+28:    --text-primary:   #f0efec;
+29:    --text-secondary: #c3c2b7;
+30:    --series-1:       #3987e5;
+35:  --surface-1:      #1a1a19;
+36:  --text-primary:   #f0efec;
+37:  --text-secondary: #c3c2b7;
+38:  --series-1:       #3987e5;
+54:| 1 | blue | `#2a78d6` | `#3987e5` |
+55:| 2 | orange | `#eb6834` | `#d95926` |
+56:| 3 | aqua | `#1baf7a` | `#199e70` |
+57:| 4 | yellow | `#eda100` | `#c98500` |
+58:| 5 | magenta | `#e87ba4` | `#d55181` |
+59:| 6 | green | `#008300` | `#008300` |
+60:| 7 | violet | `#6250d6` | `#9085e9` |
+61:| 8 | red | `#e34948` | `#e66767` |
+86:pure re-order. Light slot 7 has since been lightened, `#4a3aa7` -> `#6250d6`
+108:| 100 | `#cde2fb` | 250 | `#86b6ef` | 400 | `#3987e5` | 550 | `#1c5cab` |
+109:| 150 | `#b7d3f6` | 300 | `#6da7ec` | 450 | `#2a78d6` | 600 | `#184f95` |
+110:| 200 | `#9ec5f4` | 350 | `#5598e7` | 500 | `#256abf` | 650 | `#104281` |
+111:| | | | | | | 700 | `#0d366b` |
+117:must still clear 2:1: on light, start no lighter than **step 250** (`#86b6ef`,
+118:2.06:1); on dark, go no darker than **step 600** (`#184f95`, 2.15:1).
+123:(light `#f0efec`, dark `#383835`). Equal step count per arm. (blue<->aqua was
+130:| good | `#0ca30c` | 3.27 | 5.19 |
+131:| warning | `#fab219` | 1.79 | 9.49 |
+132:| serious | `#ec835a` | 2.57 | 6.60 |
+133:| critical | `#d03b3b` | 4.68 | 3.62 |
+135:Dark: same four steps - all clear 3:1 on the dark surface (`#1a1a19`) and remain
+145:green `#006300` sits 10.1 from the series green; green vs status-good (9.7)
+160:- Light chart surface: `#fcfcfb`
+161:- Dark chart surface: `#1a1a19`
+173:| Chart surface | `#fcfcfb` | `#1a1a19` |
+174:| Page plane | `#f9f9f7` | `#0d0d0d` |
+175:| Primary ink | `#0b0b0b` | `#f0efec` |
+176:| Secondary ink | `#52514e` | `#c3c2b7` |
+Shell cwd was reset to c:\Users\DmytroPonzel\Desktop\k
+Для записки потрібна статична PNG-гістограма для Word, тому спочатку перевіряю кольори валідатором: стовпці світло-сині, криві підібраних законів — помаранчева та бірюзова.
+Bash Validate curve colors palette
+IN
+cd "C:/Users/DMYTRO~1/AppData/Local/Temp/claude/bundled-skills/2.1.306/ba471a38ae3d96e5d9b9200120395e46/dataviz" && node scripts/validate_palette.js "#eb6834,#1baf7a,#6250d6" --mode light 2>&1 | tail -25
+
+OUT
+Palette (light, surface #fcfcfb, categorical): 3 slots
+  [PASS] Lightness band         all 3 inside L 0.43–0.77
+  [PASS] Chroma floor           all 3 >= 0.1
+  [PASS] CVD separation         worst adjacent #1baf7a↔#eb6834 ΔE 9.2 (deutan) · tritan 18.0
+  [PASS] Normal-vision floor    worst adjacent #1baf7a↔#eb6834 ΔE 27.6 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#1baf7a",2.74]]
+
+  → ALL CHECKS PASS  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+  scope: categorical palettes only. For a lone status/text color check WCAG text contrast; for a sequential ramp, lightness monotonicity.
+Shell cwd was reset to c:\Users\DmytroPonzel\Desktop\k
+Валідація пройшла, є лише одне попередження: бірюзовий слабко контрастує з фоном, тож додам кожній кривій окремий тип лінії та підпис у легенді. Тепер збережу параметри законів з повною точністю та допишу код побудови графіка.
+Bash Add matplotlib and save full-precision fit params
+IN
+cd "c:/Users/DmytroPonzel/Desktop/k" && uv add "matplotlib>=3.9" 2>&1 | tail -2 && uv run python - <<'EOF'
+import pathlib
+p=pathlib.Path("src/fms/experiments/distribution.py"); s=p.read_text(encoding="utf-8")
+s=s.replace('''        rows.append({"law": name, "params": ", ".join(f"{v:.4g}" for v in params), **res})''','''        rows.append({"law": name, "params": ", ".join(f"{v:.4g}" for v in params),
+                     "params_raw": [float(v) for v in params], **res})''')
+p.write_text(s,encoding="utf-8")
+p=pathlib.Path("src/fms/cli.py"); s=p.read_text(encoding="utf-8")
+s=s.replace('''        write_csv(d / f"dist_fits_{tag}.csv", res["fits"])''','''        write_csv(d / f"dist_fits_{tag}.csv", res["fits"])
+        write_json(d / f"dist_fits_{tag}.json", res["fits"])''')
+p.write_text(s,encoding="utf-8")
+EOF
+grep -n "params_raw\|dist_fits_" src/fms/experiments/distribution.py src/fms/cli.py
+
+OUT
+ + python-dateutil==2.9.0.post0
+ + six==1.17.0
+src/fms/experiments/distribution.py:70:                     "params_raw": [float(v) for v in params], **res})
+src/fms/cli.py:154:        write_csv(d / f"dist_fits_{tag}.csv", res["fits"])
+src/fms/cli.py:155:        write_json(d / f"dist_fits_{tag}.json", res["fits"])
+Write C:\Users\DmytroPonzel\Desktop\k\src\fms\plots.py
+108 lines
+"""Графіки за збереженими результатами експериментів."""
+
+from __future__ import annotations
+
+import csv
+import json
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt  # noqa: E402
+import numpy as np  # noqa: E402
+from scipy import stats  # noqa: E402
+
+# кольори: стовпці – світлий крок синьої шкали, криві – категоріальні слоти у фіксованому порядку
+SURFACE = "#fcfcfb"
+INK = "#0b0b0b"
+INK_2 = "#52514e"
+GRID = "#e4e3df"
+BAR = "#9ec5f4"
+CURVES = ("#eb6834", "#1baf7a", "#6250d6")
+LINESTYLES = ("-", "--", ":")  # друге кодування: колір не єдиний розрізнювач
+
+SCIPY_DIST = {
+    "normal": stats.norm,
+    "exponential (shifted)": stats.expon,
+    "gamma (shifted)": stats.gamma,
+    "lognormal (shifted)": stats.lognorm,
+    "erlang/gamma (loc=0)": stats.gamma,
+}
+LAW_UA = {
+    "normal": "нормальний",
+    "exponential (shifted)": "експоненціальний (зсунутий)",
+    "gamma (shifted)": "гамма (зсунутий)",
+    "lognormal (shifted)": "логнормальний (зсунутий)",
+    "erlang/gamma (loc=0)": "гамма / Ерланга (без зсуву)",
+}
+STRATEGY_UA = {"dedicated": "варіант 1 (закріплені роботи)", "nearest": "варіант 2 (найближчий робот)"}
+
+
+def available_tags(results: Path) -> list[str]:
+    return sorted(p.name[len("dist_data_"):-len(".txt")] for p in results.glob("dist_data_*.txt"))
+
+
+def _title(tag: str) -> str:
+    parts = tag.split("_")
+    if len(parts) == 3 and parts[2].startswith("a"):
+        strategy, policy, arrival = parts
+        return f"{STRATEGY_UA.get(strategy, strategy)}, політика {policy}, інтервал надходження exp({arrival[1:]}) с"
+    return tag
+
+
+def plot_distribution(results: Path, tag: str, top: int = 3, out: Path | None = None, dpi: int = 200) -> Path:
+    data = np.loadtxt(results / f"dist_data_{tag}.txt")
+    with (results / f"dist_hist_{tag}.csv").open(encoding="utf-8") as f:
+        hist = list(csv.DictReader(f))
+    fits = json.loads((results / f"dist_fits_{tag}.json").read_text(encoding="utf-8"))
+    if fits and "params_raw" not in fits[0]:
+        raise ValueError("У файлі підбору немає параметрів повної точності – перезапустіть `fms dist`.")
+
+    edges = np.array([float(h["left"]) for h in hist] + [float(hist[-1]["right"])])
+    freq = np.array([float(h["freq"]) for h in hist])
+    width = edges[1] - edges[0]
+    n = len(data)
+
+    fig, ax = plt.subplots(figsize=(9, 5.2), dpi=dpi)
+    fig.patch.set_facecolor(SURFACE)
+    ax.set_facecolor(SURFACE)
+    ax.bar(edges[:-1], freq, width=width, align="edge", color=BAR, edgecolor=SURFACE, linewidth=1.5,
+           label=f"відносна частота (n = {n})", zorder=2)
+
+    xs = np.linspace(max(0.0, edges[0] - width), edges[-1] + width, 600)
+    for i, fit in enumerate(fits[:top]):
+        dist = SCIPY_DIST[fit["law"]]
+        # щільність, приведена до ймовірності потрапляння в інтервал ширини width
+        ys = dist.pdf(xs, *fit["params_raw"]) * width
+        verdict = "прийнято" if fit["accepted"] else "відхилено"
+        label = (f"{LAW_UA.get(fit['law'], fit['law'])}: χ² = {fit['chi2']:.1f}, "
+                 f"χ²кр = {fit['chi2_crit_0.05']:.1f} ({verdict})")
+        ax.plot(xs, ys, color=CURVES[i % len(CURVES)], linestyle=LINESTYLES[i % len(LINESTYLES)],
+                linewidth=2, label=label, zorder=3)
+
+    mean, std = data.mean(), data.std(ddof=1)
+    ax.set_title("Розподіл часу проходження деталей", loc="left", fontsize=13, color=INK, pad=22)
+    ax.text(0, 1.02, f"{_title(tag)};  середнє {mean:.0f} с, σ = {std:.0f} с",
+            transform=ax.transAxes, fontsize=9.5, color=INK_2)
+    ax.set_xlabel("Час проходження, с", color=INK_2)
+    ax.set_ylabel("Відносна частота", color=INK_2)
+    ax.grid(axis="y", color=GRID, linewidth=0.8, zorder=0)
+    ax.set_axisbelow(True)
+    for side in ("top", "right"):
+        ax.spines[side].set_visible(False)
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color(GRID)
+    ax.tick_params(colors=INK_2, labelsize=9)
+    ax.set_xlim(xs[0], xs[-1])
+    ax.set_ylim(0, max(freq.max(), *(l.get_ydata().max() for l in ax.lines)) * 1.12)
+    leg = ax.legend(frameon=False, fontsize=9, loc="upper right")
+    for text in leg.get_texts():
+        text.set_color(INK)
+    fig.tight_layout()
+
+    out = out or results / f"dist_hist_{tag}.png"
+    fig.savefig(out, facecolor=SURFACE)
+    plt.close(fig)
+    return out
+Edit C:\Users\DmytroPonzel\Desktop\k\src\fms\cli.py
+Added 15 lines
+Edit C:\Users\DmytroPonzel\Desktop\k\src\fms\cli.py
+Added 6 lines
+8:55 PM
+Файл cli.py змінювався поза моєю сесією. Перевіряю, що там зараз, перед запуском.
+
+
+
+Bash Inspect current dist-related CLI code
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && grep -n "dist\|max-n\|bins\|arrival" src/fms/cli.py | head -40
+
+OUT
+11:  fms dist --strategy nearest --arrival 50
+23:from .experiments import capacity, compare, distribution, replications, verification, warmup
+30:                  arrival=exp(a.arrival))
+104:                                          base=Params(arrival=exp(a.arrival)))
+125:    arrivals = [float(x) for x in a.arrivals.split(",")] if a.arrivals else capacity.DEFAULT_ARRIVALS
+126:    rows = capacity.run(arrivals, a.strategy, a.policy, a.reps, a.t_end, a.warmup, a.jobs)
+128:    print_table(rows, ["strategy", "slot_policy", "arrival_mean", "input_per_hour", "throughput_per_hour",
+134:    print_table(best, ["strategy", "slot_policy", "max_stable_input_per_hour", "min_stable_arrival_mean",
+142:def cmd_dist(a):
+146:        res = distribution.run(params, a.reps, a.t_end, a.warmup, a.jobs, a.bins, a.thin, a.max_n)
+147:        tag = f"{s}_{p}_a{a.arrival:g}"
+148:        print(f"\n=== Розподіл часу проходження: {s} / {p}, інтервал надходження exp({a.arrival:g}) ===")
+153:        write_csv(d / f"dist_hist_{tag}.csv", res["histogram"])
+154:        write_csv(d / f"dist_fits_{tag}.csv", res["fits"])
+155:        write_json(d / f"dist_fits_{tag}.json", res["fits"])
+156:        write_json(d / f"dist_describe_{tag}.json", res["describe"])
+157:        (d / f"dist_data_{tag}.txt").write_text("\n".join(f"{x:.4f}" for x in res["data"]), encoding="utf-8")
+158:        print(f"-> {d}/dist_*_{tag}.*")
+161:def cmd_plot_dist(a):
+164:    from .plots import available_tags, plot_distribution
+169:        print(f"У {results} немає результатів `fms dist` (dist_data_*.txt). Спочатку запустіть `fms dist`.")
+172:        path = plot_distribution(results, tag, top=a.top, dpi=a.dpi)
+183:        sp.add_argument("--arrival", type=float, default=40.0, help="середній інтервал надходження, с")
+209:    sp.add_argument("--arrivals", help="список середніх інтервалів через кому")
+211:    sp = sub.add_parser("dist", help="розподіл часу проходження + χ²"); common(sp, reps=20)
+212:    sp.add_argument("--bins", type=int, default=20)
+214:    sp.add_argument("--max-n", type=int, default=0, help="обмежити обсяг вибірки (0 – усі)")
+215:    sp.set_defaults(f=cmd_dist)
+216:    sp = sub.add_parser("plot-dist", help="графік гістограми за результатами `fms dist`")
+221:    sp.set_defaults(f=cmd_plot_dist)
+8:55 PM
+Усе узгоджено. Перезапускаю dist (старі файли не містять параметрів повної точності) і будую графік.
+
+
+
+Bash Regenerate distribution results and plot histogram
+IN
+cd "C:/Users/DmytroPonzel/Desktop/k" && uv run fms dist --strategy nearest --policy reserve --arrival 60 --max-n 500 --bins 12 2>&1 | tail -3 && uv run fms plot-dist --tag nearest_reserve_a60
+
+OUT
+exponential (shifted)  133.2, 256.4          27.066  8   15.507  False   
+normal                 389.7, 210.1          72.945  5   11.070  False   
+-> results/dist_*_nearest_reserve_a60.*
+nearest_reserve_a60: -> results\dist_hist_nearest_reserve_a60.png
+Read C:\Users\DmytroPonzel\Desktop\k\results\dist_hist_nearest_reserve_a60.png
+8:56 PM
+Графік виглядає чисто, підписи ніде не накладаються. Додаю команду в таблицю README.
+
+
+
+Edit C:\Users\DmytroPonzel\Desktop\k\README.md
+Added 1 line
+8:56 PM
+Тепер гістограму можна побудувати з результату fms dist новою командою fms plot-dist. Я перевірив її на реальних даних, графік вийшов коректний: dist_hist_nearest_reserve_a60.png.
+
+
+uv run fms dist --strategy nearest --policy reserve --arrival 60 --max-n 500 --bins 12
+uv run fms plot-dist --tag nearest_reserve_a60
+Що на графіку: відносні частоти з тими самими інтервалами, що й у χ², і поверх них криві трьох найкращих законів. У легенді для кожного закону стоять χ², χ²кр і висновок «прийнято / відхилено».
+Кольори і лінії: криві розрізняються і кольором, і типом лінії (суцільна, штрихова, пунктирна), тож графік читається й у чорно-білому друці.
+Параметри:
+--tag вибирає, який результат малювати; без нього будуються графіки для всіх знайдених у results/;
+--top задає кількість кривих;
+--dpi задає роздільність (за замовчуванням 200, для Word достатньо).
+Зміни в dist: тепер команда додатково зберігає dist_fits_*.json з точними параметрами законів, з яких будуються криві. Тому для старих результатів dist треба перезапустити, інакше plot-dist попросить це зробити.
+У проєкт додано залежність matplotlib, команда описана в таблиці README.md.
