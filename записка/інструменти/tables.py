@@ -24,8 +24,8 @@ EXPECTED = {
     1: "базовий прогін для порівняння",
     2: "система недовантажена: $\\Lambda \\approx 3600 / 80 = 45$ дет./год, черга на площадці мала, "
        "коефіцієнти використання менші, ніж у базовому прогоні",
-    3: "перевантаження сильніше: $\\Lambda$ не зростає, бо її обмежує M2; черга і час проходження більші, "
-       "ніж у базовому прогоні",
+    3: "перевантаження сильніше: $\\Lambda$ не зростає, бо її обмежує цикл місця M2 разом з роботами; черга і "
+       "час проходження більші, ніж у базовому прогоні",
     4: "M2 перестає бути вузьким місцем: $\\Lambda \\approx 90$ дет./год, черга не накопичується, час "
        "проходження різко менший",
     5: "вузьким місцем стає M1: $\\rho_{\\mathrm{M1}} \\approx 1$, $\\Lambda$ менша, ніж у базовому прогоні",
@@ -127,13 +127,15 @@ def verification(results: Path, out: Path) -> None:
     for strategy, no, label in (("dedicated", "3.5", "варіант 1"), ("nearest", "3.6", "варіант 2")):
         lines = [f"Таблиця {no} – Результати верифікації, {label}", "",
                  r"| № | $\Lambda$, дет./год | $\bar\tau$, с | $L_{max}$, шт. | $\bar L_A$, од. | $\rho_{\mathrm{M1}}$ "
-                 r"| $\rho_{\mathrm{M2}}$ | $\bar\rho_{\mathrm{R}}$ | $N_{\text{кін}}$, шт. |",
-                 "|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|"]
+                 r"| $\rho_{\mathrm{M2}}$ | $\rho_{\mathrm{R1}}$ | $\rho_{\mathrm{R2}}$ | $\rho_{\mathrm{R3}}$ "
+                 r"| $N_{\text{кін}}$, шт. |",
+                 "|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|"]
         for k, r in enumerate(by[strategy], start=1):
+            robots = " | ".join(num(r[f"robot{j}_util"], 3) for j in (1, 2, 3))
             lines.append(
                 f"| {k} | {num(r['throughput_per_hour'], 1)} | {num(r['sojourn_mean'], 0)} | "
                 f"{num(r['buffer_max'], 1)} | {num(r['buffer_mean'], 1)} | {num(r['M1_occupied'], 3)} | "
-                f"{num(r['M2_occupied'], 3)} | {num(r['robots_util_mean'], 3)} | {num(r['wip_end'], 1)} |")
+                f"{num(r['M2_occupied'], 3)} | {robots} | {num(r['wip_end'], 1)} |")
         (out / f"verification_{strategy}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

@@ -2,8 +2,8 @@
 
 Фрагмент деталей:  Create -> A -> R1 -> M1 -> R2 -> M2 -> R3 -> W -> вихід (варіант 1),
                    Create -> A -> T1 -> M1 -> T2 -> M2 -> T3 -> W -> вихід (варіант 2).
-Фрагмент руху роботів (варіант 2): П <-> Х, запити – роботи.
-Взаємодія фрагментів – блокування маршрутів B0–B4 і керування роботами К (формули (2.4), (2.5)).
+Фрагмент руху роботів (варіант 2): П <-> Х, запити – роботи; пристрій r СМО T1–T3, П, Х – робот r.
+Взаємодія фрагментів – лише блокування маршрутів: B0–B4 і BХ на маршруті П -> Х (формули (2.1)–(2.5)).
 """
 
 from __future__ import annotations
@@ -68,20 +68,18 @@ class Model:
                     self.robot_channels[k].append(ch)
                 self.T[S] = qs
         else:
-            # варіант 2: на кожному шляху СМО Ts з N_R пристроїв; пристрій r – робот r
+            # варіант 2: на кожному шляху СМО Ts з N_R пристроїв Ts.1, Ts.2, …; пристрій Ts.r – робот r
             n = p.n_robots
             self.robots = [Robot(id=k + 1, pos=("A", "M1", "M2")[k % 3]) for k in range(n)]
             for S in (1, 2, 3):
                 qs = QS(self, f"T{S}", n, service=lambda part, h, S=S: h + self.travel[S],
-                        release=lambda part, h: h, on_free=lambda ch, t, S=S: self._robot_at(ch, DST[S], t),
-                        names=[f"T{S}:R{k + 1}" for k in range(n)])
+                        release=lambda part, h: h, on_free=lambda ch, t, S=S: self._robot_at(ch, DST[S], t))
                 for ch in qs.channels:
                     self.robot_channels[ch.index + 1].append(ch)
                 self.T[S] = qs
-            # фрагмент руху роботів: П – роботи в пунктах, Х – холостий хід
-            self.P = QS(self, "П", n, service=lambda robot, h: 0.0, names=[f"П:R{k + 1}" for k in range(n)])
-            self.X = QS(self, "Х", n, service=lambda robot, h: p.distance(robot.pos, robot.target),
-                        names=[f"Х:R{k + 1}" for k in range(n)])
+            # фрагмент руху роботів: П – роботи в пунктах, Х – холостий хід; пристрої П.r і Х.r – робот r
+            self.P = QS(self, "П", n, service=lambda robot, h: 0.0)
+            self.X = QS(self, "Х", n, service=lambda robot, h: p.distance(robot.pos, robot.target))
             for ch in self.X.channels:
                 self.robot_channels[ch.index + 1].append(ch)
 
@@ -101,17 +99,17 @@ class Model:
         Route(self, self.T[3], self.W, handling="вивільнення")
         Route(self, self.W, self.exit)
         self.stat_qs = [self.M1, self.M2, *self.T.values()]
-        self.robot_control: Callable[[float], bool] | None = None
         if not self.dedicated:
-            # маршрут П -> Х відкриває лише керування роботами (формули (2.4), (2.5))
-            self.route_PX = Route(self, self.P, self.X, lambda: True, "BХ",
-                                  select=lambda robot: self.X.channels[robot.id - 1])
+            # маршрут П -> Х: предикат BХ залежить від пристрою (формули (2.4), (2.5)); він перевіряється
+            # останнім, після переходів деталей, бо залежить від того, скільки деталей чекає на робота
+            self.routes.append(Route(self, self.P, self.X, label="BХ", opened=self.B_X,
+                                     select=lambda robot: self.X.channels[robot.id - 1],
+                                     on_transfer=self._dispatched))
             Route(self, self.X, self.P, select=lambda robot: self.P.channels[robot.id - 1],
-                  on_transfer=lambda robot, ch, dst, t: self._arrived(robot, t))
+                  on_transfer=self._arrived)
             for r in self.robots:
                 self.P.accept(r, 0.0, 0.0, self.P.channels[r.id - 1])
             self.stat_qs.append(self.X)
-            self.robot_control = self.control
         self.trace = trace
         self.reset_stats()
 
@@ -175,35 +173,37 @@ class Model:
     def route_from(self, name: str) -> Route:
         return {"A": self.A, "M1": self.M1, "M2": self.M2}[name].route
 
-    def control(self, t: float) -> bool:
-        """Керування роботами К, формули (2.4) і (2.5): найближчий вільний робот рушає до деталі.
+    # варіант 2, (2.4), (2.5): маршрут П -> Х відкритий лише для пристрою П.r* робота з пари (r*, S*)
+    def B_X(self) -> Channel | None:
+        """Пристрій П, для якого BХ(S, t) = 0, або None, якщо множина P(t) порожня.
 
-        Робот, який уже стоїть у точці src_S, забирає деталь маршрутом src_S -> T_S (блокування B0, B2, B4).
+        Робот, який уже стоїть у точці src_S, холостого ходу не виконує: деталь переходить до нього
+        маршрутом src_S -> T_S, коли знімається блокування B0, B2 чи B4.
         """
-        moved = False
-        while True:
-            best = None
-            for r in self.robots:
-                if not self.is_free(r):
+        best = None
+        for r in self.robots:
+            if not self.is_free(r):                                      # F_r = 0
+                continue
+            for S in (1, 2, 3):
+                src = SRC[S]
+                q = self.waiting(S) - self.heading(src) - len(self.free_at(src))   # q_S(t)
+                if r.pos == src or q <= 0 or self.D(S):                  # (r, S) не належить P(t)
                     continue
-                for S in (1, 2, 3):
-                    src = SRC[S]
-                    q = self.waiting(S) - self.heading(src) - len(self.free_at(src))
-                    if r.pos == src or q <= 0 or self.D(S):
-                        continue
-                    key = (self.params.distance(r.pos, src), self.streams.ties.random())
-                    if best is None or key < best[0]:
-                        best = (key, r, S)
-            if best is None:
-                return moved
-            (d, _), r, S = best
-            r.target = SRC[S]
-            ch = self.P.channels[r.id - 1]
-            self.route_PX.waiting.remove(ch)
-            self.empty_travel[S] += d
-            self.log(t, ch.name, f"холостий хід {r.pos} -> {r.target} ({d:g} с) до деталі шляху {S}")
-            self.route_PX.transfer(ch, t)
-            moved = True
+                key = (self.params.distance(r.pos, src), self.streams.ties.random())
+                if best is None or key < best[0]:                        # (2.5)
+                    best = (key, r, S)
+        if best is None:
+            return None
+        _, r, S = best
+        r.target = SRC[S]                                                # target_r* := src_S*
+        return self.P.channels[r.id - 1]
+
+    def _dispatched(self, robot: Robot, ch: Channel, dst_ch: Channel, t: float) -> None:
+        """Запит робота перейшов з П у Х: холостий хід до точки target."""
+        S = next(S for S in (1, 2, 3) if SRC[S] == robot.target)
+        d = self.params.distance(robot.pos, robot.target)
+        self.empty_travel[S] += d
+        self.log(t, ch.name, f"{robot}: П -> Х відкрито (BХ = 0), холостий хід {robot.pos} -> {robot.target} ({d:g} с)")
 
     def _robot_for(self, S: int) -> Callable:
         """Правило вибору пристрою СМО перевезення: вільний робот у точці завантаження."""
@@ -216,13 +216,15 @@ class Model:
         return select
 
     def _robot_at(self, ch: Channel, point: str, t: float) -> None:
+        """Кінець вивільнення в пристрої Ts.r: робот r залишається в точці вивантаження, pos_r := dst_S."""
         robot = self.robots[ch.index]
         robot.pos = point
-        self.log(t, ch.name, f"робот вільний у {point}")
+        self.log(t, ch.name, f"{robot} вільний у {point}")
 
-    def _arrived(self, robot: Robot, t: float) -> None:
+    def _arrived(self, robot: Robot, ch: Channel, dst_ch: Channel, t: float) -> None:
+        """Кінець холостого ходу: запит робота переходить з Х у П, pos_r := target_r."""
         robot.pos = robot.target
-        self.log(t, f"Х:{robot}", f"кінець холостого ходу, робот у {robot.pos}")
+        self.log(t, ch.name, f"{robot}: кінець холостого ходу, робот у {robot.pos}")
 
     # ================================================================== переходи деталей
     def _ready(self, part: Part, S: int, t: float) -> None:
@@ -276,14 +278,12 @@ class Model:
         self.update_blockings(t)
 
     def update_blockings(self, t: float) -> None:
-        """Оновлення умов блокування: розблокування пристроїв і керування роботами."""
+        """Зняття блокувань: запити переходять з пристроїв, для яких B(S, t) = 0 (маршрут П -> Х – останнім)."""
         changed = True
         while changed:
             changed = False
             for route in self.routes:
                 changed |= route.unblock(t)
-            if self.robot_control:
-                changed |= self.robot_control(t)
 
     def run(self, t_end: float, t_warmup: float = 0.0,
             observe_every: float | None = None,

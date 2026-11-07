@@ -110,10 +110,29 @@ def test_nearest_robots_serve_several_routes():
 
 
 def test_nearest_rule_takes_closest_free_robot():
-    # деталь #2 надходить на A, R1 вивільняє деталь #1 на M1, вільні R2 (у M1, 6 с) і R3 (у M2, 13 с)
+    # деталь #2 надходить на A, R1 вивільняє деталь #1 на M1, вільні R2 (у M1, 6 с) і R3 (у M2, 13 с):
+    # маршрут П -> Х відкривається (BХ = 0) лише для пристрою П.2 найближчого робота R2
     m = Model(Params(strategy=NEAREST), seed=1, trace=True, trace_until=20.0).run(20.0)
     lines = "\n".join(m.trace_lines)
-    assert "П:R2    холостий хід M1 -> A (6 с)" in lines
+    assert "П.2     R2: П -> Х відкрито (BХ = 0), холостий хід M1 -> A (6 с)" in lines
+    assert "П.3" not in lines
+
+
+def test_robot_moves_only_through_route_blocking():
+    # у варіанті 2 немає окремого керування: запити роботів переходять П -> Х лише при знятті блокування BХ
+    m = Model(Params(strategy=NEAREST), seed=1)
+    assert not hasattr(m, "control")
+    route_px = m.P.route
+    assert route_px in m.routes and m.routes[-1] is route_px and route_px.opened == m.B_X
+    assert len(route_px.waiting) == 3 and all(ch.K == BLOCKED for ch in m.P.channels)
+
+
+def test_device_names_are_unique():
+    # пристрої СМО T1–T3, П, Х мають різні назви: Ts.r, П.r, Х.r – пристрій робота r
+    m = Model(Params(strategy=NEAREST), seed=1)
+    names = [ch.name for qs in (*m.T.values(), m.P, m.X) for ch in qs.channels]
+    assert len(names) == len(set(names)) == 15
+    assert names[:3] == ["T1.1", "T1.2", "T1.3"] and names[-3:] == ["Х.1", "Х.2", "Х.3"]
 
 
 def test_at_most_one_robot_waits_per_machine():

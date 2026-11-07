@@ -369,7 +369,7 @@ def uml(out: Path) -> Path:
         "+ params: Params", "+ tcurr: float", "+ calendar: list", "+ A, M1, M2, W: QS", "+ T: dict[int, QS]",
         "+ routes: list[Route]", "+ robots: list[Robot]"],
         ["+ run(t_end, t_warmup)", "+ transition(t)", "+ update_blockings(t)", "+ B0() … B4(): bool",
-         "+ control(t): bool", "+ results(): dict"], size=fs)
+         "+ B_X(): Channel | None", "+ results(): dict"], size=fs)
     B["RandomStreams"] = uml_class(s, 730, 10, 290, "RandomStreams", [
         "+ arrivals, m1, m2: Stream", "+ handling, ties: Stream"], [], size=fs)
     B["Stream"] = uml_class(s, 730, 170, 290, "Stream", ["- _rnd: random.Random"], [
@@ -382,8 +382,8 @@ def uml(out: Path) -> Path:
                         ["+ accept(req, t, h, ch)", "+ end_of_service(ch, t)", "+ vacate(ch, t, h)",
                          "+ update_stats(t1, t2)"], size=fs)
     B["Route"] = uml_class(s, 315, yr, 270, "Route", ["+ src, dst", "+ blocked(): bool  – B(S, t)",
-                                                     "+ waiting: deque[Channel]"],
-                           ["+ transfer(ch, t)", "+ unblock(t): bool"], size=fs)
+                                                     "+ opened(): Channel | None", "+ waiting: deque[Channel]"],
+                           ["+ closed(): bool", "+ transfer(ch, t)", "+ unblock(t): bool"], size=fs)
     B["Create"] = uml_class(s, 625, yr, 180, "Create", ["+ tnext: float", "+ route: Route"], ["+ arrival(t)"],
                             size=fs)
     B["Exit"] = uml_class(s, 845, yr, 175, "Exit", [], ["+ accept(part, t)"], size=fs)

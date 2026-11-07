@@ -29,7 +29,8 @@ SCENARIOS = [
 ]
 
 COLUMNS = ["throughput_per_hour", "sojourn_mean", "buffer_max", "buffer_mean",
-           "M1_occupied", "M2_occupied", "M2_processing", "robots_util_mean", "wip_end"]
+           "M1_occupied", "M2_occupied", "M2_processing", "robots_util_mean",
+           "robot1_util", "robot2_util", "robot3_util", "wip_end"]
 INPUT_COLUMNS = ["in_arrival", "in_m1", "in_m2", "in_handling", "in_m2_capacity", "in_travel"]
 
 

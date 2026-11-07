@@ -63,7 +63,8 @@ def cmd_verify(a):
         part = verification.run(s, a.reps, a.t_end, a.warmup, a.jobs)
         print(f"\n=== Верифікація: {s} ({a.reps} прогонів по {a.t_end:g} с, перехідний {a.warmup:g} с) ===")
         print_table(part, ["scenario", *verification.COLUMNS],
-                    ["сценарій", "дет/год", "Tпрох", "maxA", "серA", "M1зайн", "M2зайн", "M2обр", "роботи", "WIPкін"])
+                    ["сценарій", "дет/год", "Tпрох", "maxA", "серA", "M1зайн", "M2зайн", "M2обр", "роботи",
+                     "R1", "R2", "R3", "WIPкін"])
         rows += part
     write_csv(d / "verification.csv", rows)
     print(f"\n-> {d / 'verification.csv'}")

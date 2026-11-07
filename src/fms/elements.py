@@ -5,8 +5,9 @@
             (m = None – кількість пристроїв не обмежена);
   Channel – пристрій СМО: стан K (0 – вільний, 1 – зайнятий, 2 – блокований) і момент
             завершення обслуговування; після виходу запиту пристрій може звільнятися
-            із затримкою (затримка звільнення);
-  Route   – дуга мережі з умовою блокування B(S, t);
+            із затримкою (затримка звільнення); j-й пристрій СМО E називається E.j;
+  Route   – дуга мережі з умовою блокування B(S, t), спільною для всіх пристроїв СМО-джерела
+            або окремою для кожного пристрою (маршрут П -> Х у варіанті 2);
   Exit    – вихід з мережі.
 
 Запити мережі – деталі (Part), а у варіанті 2 також роботи (Robot) у фрагменті руху роботів.
@@ -70,8 +71,6 @@ class Channel:
     @property
     def name(self) -> str:
         qs = self.qs
-        if qs.names:
-            return qs.names[self.index]
         return qs.name if len(qs.channels) == 1 and not qs.unlimited else f"{qs.name}.{self.index + 1}"
 
 
@@ -89,11 +88,9 @@ class QS:
 
     def __init__(self, model: "Model", name: str, m: int | None,
                  service: Callable, release: Callable | None = None,
-                 on_done: Callable | None = None, on_free: Callable | None = None,
-                 names: list[str] | None = None):
+                 on_done: Callable | None = None, on_free: Callable | None = None):
         self.model = model
         self.name = name
-        self.names = names
         self.unlimited = m is None
         self.channels: list[Channel] = [] if m is None else [Channel(self, j) for j in range(m)]
         self._spare: list[Channel] = []
@@ -152,7 +149,7 @@ class QS:
         if self.on_done:
             self.on_done(ch.request, t)
         route = self.route
-        if route.blocked():                # B(S, t) = 1: запит лишається в пристрої
+        if route.closed():                 # B(S, t) = 1: запит лишається в пристрої
             self.set_state(ch, BLOCKED, t)
             route.waiting.append(ch)
             if isinstance(ch.request, Part):
@@ -220,16 +217,21 @@ class QS:
 class Route:
     """Дуга мережі: запит переходить із СМО src у СМО dst, якщо умова блокування B(S, t) = 0.
 
+    blocked – предикат B(S, t), однаковий для всіх пристроїв СМО src;
+    opened – предикат, що залежить від пристрою (маршрут П -> Х, формула (2.5)): повертає
+             заблокований пристрій src, для якого B(S, t) = 0, або None; перевіряється під час
+             зняття блокувань, коли оброблено всі події моменту;
     handling – назва дії робота (захоплення, вивільнення), що супроводжує перехід;
     select – правило вибору пристрою в dst (за замовчуванням вільний з найменшим номером).
     """
 
     def __init__(self, model: "Model", src, dst, blocked: Callable[[], bool] | None = None,
                  label: str = "", handling: str = "", select: Callable | None = None,
-                 on_transfer: Callable | None = None):
+                 on_transfer: Callable | None = None, opened: Callable[[], Channel | None] | None = None):
         self.model = model
         self.src, self.dst = src, dst
         self.blocked = blocked or (lambda: False)
+        self.opened = opened
         self.label = label
         self.handling = handling      # «захоплення» або «вивільнення», якщо перехід їх супроводжує
         self.select = select
@@ -237,6 +239,13 @@ class Route:
         self.waiting: deque[Channel] = deque()   # заблоковані канали src у порядку блокування
         self.name = f"{src.name} -> {dst.name}"
         src.route = self
+
+    def closed(self) -> bool:
+        """B(S, t) = 1 у момент завершення обслуговування в пристрої src.
+
+        Предикат, що залежить від пристрою, перевіряється пізніше, під час зняття блокувань.
+        """
+        return self.opened is not None or self.blocked()
 
     def transfer(self, ch: Channel, t: float) -> None:
         req = ch.request
@@ -250,11 +259,24 @@ class Route:
         self.dst.accept(req, t, h, dst_ch)
 
     def unblock(self, t: float) -> bool:
-        """Зняти блокування із заблокованих пристроїв, поки маршрут відкритий (у порядку блокування)."""
+        """Перевести запити із заблокованих пристроїв, для яких B(S, t) = 0.
+
+        Спільний предикат: пристрої виходять у порядку блокування, поки маршрут відкритий.
+        Предикат, що залежить від пристрою: виходить пристрій, для якого маршрут відкритий.
+        """
         moved = False
-        while self.waiting and not self.blocked():
-            ch = self.waiting.popleft()
-            self.model.log(t, ch.name, f"{ch.request}: маршрут {self.name} відкрито ({self.label} = 0)")
+        while self.waiting:
+            if self.opened is not None:
+                ch = self.opened()
+                if ch is None:
+                    break
+                self.waiting.remove(ch)
+            elif self.blocked():
+                break
+            else:
+                ch = self.waiting.popleft()
+            if isinstance(ch.request, Part):
+                self.model.log(t, ch.name, f"{ch.request}: маршрут {self.name} відкрито ({self.label} = 0)")
             self.transfer(ch, t)
             moved = True
         return moved
